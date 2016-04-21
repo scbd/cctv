@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" ng-controller="TemplateController as templateCtrl">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <base href="<%=baseUrl%>">
+    <title>CCTV - Convention on Biological Diversity</title>
+    <style>[ng\:cloak], [ng-cloak], .ng-cloak {display: none !important; }</style>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="app/libs/bootswatch-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="app/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="app/libs/animate.css/animate.min.css">
+    <link rel="stylesheet" href="app/resources/style.css">
+    <script src="app/libs/requirejs/require.js" data-main="app/boot.js"></script>
+</head>
+
+<body>
+    <header class="header navbar">
+        <div class="containerDIABLED">
+            <div class="navbar-header">
+                <img src="app/resources/images/cbd-leaf-white.svg" style="float:left;height:45px;margin-left:12px;">
+                <a class="navbar-brand" ng-cloak>{{templateCtrl.eventGroup.Title.en}}</a>
+            </div>
+            <nav class="navbar-collapse" ng-cloak>
+                <ul class="nav navbar-nav navbar-right hidden-xs">
+                    <li>
+                        <a>{{templateCtrl.now | date:'EEEE, d MMMM'}} <b>{{templateCtrl.now | date:'HH:mm'}}</b></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="main" ng-class="{ 'has-news' : templateCtrl.news.length }">
+        <ng-view></ng-view>
+    </div>
+
+    <pre>{{templateCtrl.frames|json}}</pre>
+    <pre>{{templateCtrl.news|json}}</pre>
+
+    <footer class="footer navbar" ng-if="templateCtrl.news.length">
+        <div class="container-fluid">
+
+            <div class="news-scroller-wrap">
+                <div class="news-scroller">
+                    <div class="news-scroller-item" ng-repeat="n in templateCtrl.news">{{n.content.title}}</div>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+</body>
+
+</html>

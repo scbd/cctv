@@ -1,0 +1,21 @@
+{
+  "name": "cctv",
+  "dependencies": {
+    "animate.css": "3.5",
+    "requirejs": "2.1.20",
+    "requirejs-text": "2.0.14",
+    "jquery": "2.2",
+    "angular": "1.5",
+    "angular-route": "1.5",
+    "angular-cookies": "1.5",
+    "angular-animate": "1.5",
+    "angular-sanitize": "1.5",
+    "angular-flex": "git://github.com/scbd/angular-flex.git#1.0.1",
+    "bootstrap": "3.3.6",
+    "bootswatch-dist": "3.3.6-slate",
+    "font-awesome": "4.6",
+    "lodash": "3.10",
+    "moment": "2.13.0",
+    "moment-timezone": "0.5.3"
+  }
+}

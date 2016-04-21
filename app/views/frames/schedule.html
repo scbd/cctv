@@ -1,0 +1,16 @@
+<div class="container">
+
+    <h1>{{scheduleCtrl.frame.content.title}}</h1>
+
+    <table class="table table-striped">
+        <tr ng-repeat="r in scheduleCtrl.reservations">
+            <td style="width:100px">
+            {{r.start | date:'HH:mm'}} - {{r.end | date:'HH:mm' }}</td>
+            <td>
+                <b>{{scheduleCtrl.rooms[r.location.room].title}}</b>
+                <div>{{r.title}} <i>{{r.description}}</i></div>
+            </td>
+            <td style="width:100px"><b>{{scheduleCtrl.types[r.type].title}}</b></td>
+        </tr>
+    </table>
+</div>
