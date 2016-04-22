@@ -1,6 +1,6 @@
 define(['app', 'lodash', 'moment-timezone', 'jquery', 'ngCookies', 'services/caches'], function(app, _, moment, $) { 'use strict';
 
-    app.controller('TemplateController', ['$rootScope', '$http', '$cookies', '$timeout', '$q', '$location', 'cctvCache', function($rootScope, $http, $cookies, $timeout, $q, $location, cctvCache) {
+    app.controller('TemplateController', ['$rootScope', '$http', '$cookies', '$timeout', '$q', '$location', '$injector', 'cctvCache', function($rootScope, $http, $cookies, $timeout, $q, $location, $injector, cctvCache) {
 
         if($location.path()!='/')
             $location.path('/');
@@ -159,12 +159,20 @@ define(['app', 'lodash', 'moment-timezone', 'jquery', 'ngCookies', 'services/cac
                 if(frames.length<=1)
                     load();
 
-                if(frames) {
+                if(frame) {
+
+                    var lastRoute = $location.path();
+
                     $location.path('/'+frame.content.type+'/'+frame._id);
-                    $location.search('cb', new Date().getTime());
+
+                    if(lastRoute==$location.path()){
+                        $injector.invoke(["$route", function($route) {
+                            $route.reload();
+                        }]);
+                    }
                 }
                 else
-                    $location.path('/');
+                    $location.path('/event-information');
 
                 return frame;
 
