@@ -70,7 +70,7 @@ define(['moment-timezone', 'lodash', 'app', 'services/caches'], function(moment,
 
                 var fields = { start:1, end:1, title: 1, type : 1, description : 1, location:1 };
 
-                return $http.get('/api/v2016/reservations', { params : { q : query, f : fields } }).then(function(res) {
+                return $http.get('/api/v2016/reservations', { params : { q : query, f : fields, s: { start:1 } } }).then(function(res) {
 
                     var reservations = res.data;
 
