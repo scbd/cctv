@@ -6,6 +6,7 @@ define(['app', 'lodash', 'moment-timezone', 'jquery', 'ngCookies', 'services/cac
         var _frames;
         var _frameTimer;
         var _news;
+        var _newsTimer;
 
         var _ctrl = this;
 
@@ -15,6 +16,7 @@ define(['app', 'lodash', 'moment-timezone', 'jquery', 'ngCookies', 'services/cac
         updateTime();
         load();
         nextFrame();
+        nextNews();
 
         //==============================
         //
@@ -74,6 +76,58 @@ define(['app', 'lodash', 'moment-timezone', 'jquery', 'ngCookies', 'services/cac
         //==============================
         //
         //==============================
+        function nextNews() {
+
+            var newsList = _news;
+
+            if(!newsList || !newsList.length) {
+
+                newsList = $q.when(_streamData).then(function(data) {
+
+                    _news = _.filter(data.frames, function(f) { return f.content.type=='news'; });
+
+                    return _news;
+                });
+            }
+
+            return $q.when(newsList).then(function(newsList) {
+
+                _ctrl.news = newsList.shift();
+
+                return _ctrl.news;
+
+            }).then(function(news) {
+
+                setNewsTimer(news ? 10000 : 2000); // backup refresh
+
+                return news;
+
+            }).catch(function(err) {
+
+                console.error(err.data || err);
+
+                _frames = [];
+
+                load();
+
+                setNewsTimer(5000);
+            });
+
+        }
+
+        //==============================
+        //
+        //==============================
+        function setNewsTimer(timeout) {
+
+            if(_newsTimer)
+                $timeout.cancel(_newsTimer);
+
+            _newsTimer = null;
+
+            if(timeout)
+                _newsTimer = $timeout(nextNews, timeout);
+        }
 
 
         //==============================
