@@ -86,7 +86,9 @@ define(['moment-timezone', 'lodash', 'app', 'services/caches'], function(moment,
 
                 _ctrl.reservations = reservations;
 
-                $timeout(completed, 10000);
+            }).then(function() {
+
+                ready(Math.max(10000, _ctrl.reservations.lenght*1000));
 
             }).catch(function(err) {
 
@@ -131,6 +133,14 @@ define(['moment-timezone', 'lodash', 'app', 'services/caches'], function(moment,
             return $http.get('/api/v2016/event-groups/'+_ctrl.frame.eventGroup, { cache : cctvCache }).then(function(res) {
                 return res.data.timezone;
             });
+        }
+
+        //========================================
+        //
+        //========================================
+        function ready(timeout) {
+
+            $scope.$emit('frameReady', _ctrl.frame, timeout);
         }
 
         //========================================

@@ -17,13 +17,23 @@ define(['app', 'services/caches', 'filters/html-sanitizer'], function() { "use s
 
                 _ctrl.frame = res.data;
 
-                $timeout(completed, 5000);
+            }).then(function(){
+
+                ready(_ctrl.frame.timeout);
 
             }).catch(function(err){
 
                 console.error(err.data || err);
                 completed();
             });
+        }
+
+        //========================================
+        //
+        //========================================
+        function ready(timeout) {
+
+            $scope.$emit('frameReady', _ctrl.frame, timeout);
         }
 
         //========================================

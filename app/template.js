@@ -1,14 +1,16 @@
-define(['app', 'lodash', 'moment-timezone', 'ngCookies', 'services/caches'], function(app, _, moment) { 'use strict';
+define(['app', 'lodash', 'moment-timezone', 'jquery', 'ngCookies', 'services/caches'], function(app, _, moment, $) { 'use strict';
 
     app.controller('TemplateController', ['$rootScope', '$http', '$cookies', '$timeout', '$q', '$location', 'cctvCache', function($rootScope, $http, $cookies, $timeout, $q, $location, cctvCache) {
 
         var _streamData;
         var _frames;
+        var _frameTimer;
         var _news;
 
         var _ctrl = this;
 
-        $rootScope.$on('frameCompleted', frameCompleted);
+        $rootScope.$on('frameReady',     function(evt, f, t) { frameReady    (f, t); } );
+        $rootScope.$on('frameCompleted', function(evt, f)    { frameCompleted(f);    } );
 
         updateTime();
         load();
@@ -72,7 +74,14 @@ define(['app', 'lodash', 'moment-timezone', 'ngCookies', 'services/caches'], fun
         //==============================
         //
         //==============================
+
+
+        //==============================
+        //
+        //==============================
         function nextFrame() {
+
+            setFrameTimer(null);
 
             var frames = _frames;
 
@@ -93,10 +102,18 @@ define(['app', 'lodash', 'moment-timezone', 'ngCookies', 'services/caches'], fun
                 if(frames.length<=1)
                     load();
 
-                if(frames)
+                if(frames) {
                     $location.path('/'+frame.content.type+'/'+frame._id);
+                    $location.search('cb', new Date().getTime());
+                }
                 else
                     $location.path('/');
+
+                return frame;
+
+            }).then(function(frame) {
+
+                setFrameTimer(frame.timeout || 10000); // backup refresh
 
                 return frame;
 
@@ -108,15 +125,68 @@ define(['app', 'lodash', 'moment-timezone', 'ngCookies', 'services/caches'], fun
 
                 load();
 
-                $timeout(nextFrame, 5000);
+                setFrameTimer(5000);
             });
         }
 
         //==============================
         //
         //==============================
-        function nextNews() {
-            console.log('TODO');
+        function setFrameTimer(timeout) {
+
+            if(_frameTimer)
+                $timeout.cancel(_frameTimer);
+
+            _frameTimer = null;
+
+            if(timeout)
+                _frameTimer = $timeout(nextFrame, timeout);
+        }
+
+        //==============================
+        //
+        //==============================
+        function autoScroll(timeout) {
+
+            var top = neededScroll();
+
+            if(top) {
+                $timeout(function () {
+                    $("ng-view").animate({ scrollTop: top }, timeout);
+                }, 2000);
+
+                return timeout+2000+2000; //wait scroll wait
+            }
+
+            return timeout;
+        }
+
+        //==============================
+        //
+        //==============================
+        function neededScroll() {
+
+            var view    = $("ng-view:last").height();
+            var content = $("ng-view:last > :first-child").height();
+
+            return Math.max(content - view, 0);
+        }
+
+        //==============================
+        //
+        //==============================
+        function frameReady(frame, timeout) {
+
+            $rootScope.$applyAsync(function(){
+
+                timeout = timeout || frame.timeout || 10*1000;
+
+                if(neededScroll()) {
+                    timeout = autoScroll(timeout);
+                }
+
+                setFrameTimer(timeout);
+            });
         }
 
         //==============================
