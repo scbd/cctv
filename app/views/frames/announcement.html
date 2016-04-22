@@ -1,7 +1,7 @@
-<div class="jumbotron">
+<div class="jumbotron announcement">
     <div class="container">
 
         <h1>{{announcementCtrl.frame.content.title|| 'Announcement' }}</h1>
 
-        <p ng-bind-html="announcementCtrl.frame.content.html | sanitizeHtml "></p>
+        <p class="content" ng-bind-html="announcementCtrl.frame.content.html | sanitizeHtml "></p>
 </div>

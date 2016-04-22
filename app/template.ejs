@@ -34,21 +34,12 @@
         </div>
     </header>
 
-    <div class="main" ng-class="{ 'has-news' : templateCtrl.news.length }">
-        <ng-view></ng-view>
-    </div>
+    <ng-view ng-class="{ 'has-news' : templateCtrl.news }"></ng-view>
 
-    <pre>{{templateCtrl.frames|json}}</pre>
-    <pre>{{templateCtrl.news|json}}</pre>
-
-    <footer class="footer navbar" ng-if="templateCtrl.news.length">
+    <footer class="ng-cloak footer navbar" ng-if="templateCtrl.news">
         <div class="container-fluid">
 
-            <div class="news-scroller-wrap">
-                <div class="news-scroller">
-                    <div class="news-scroller-item" ng-repeat="n in templateCtrl.news">{{n.content.title}}</div>
-                </div>
-            </div>
+            {{templateCtrl.news.content.title}}
 
         </div>
     </footer>

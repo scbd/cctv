@@ -1,6 +1,11 @@
 body, html {
     height: 100%;
 }
+
+body::-webkit-scrollbar {
+    width: 0 !important
+}
+
 header.header {
     position: fixed;
     top: 0px;
@@ -8,75 +13,50 @@ header.header {
     right: 0px;
     margin-bottom: 0px;
     z-index: 1000;
+    font-size: 150%;
+
+}
+header.header .navbar-brand {
+    font-size: 100%;
 }
 
-div.main {
+ng-view  {
     height: 100%;
+    display: block;
     overflow-y: auto;
     padding-top: 60px;
     padding-bottom: 10px;
 }
-div.main > ng-view {
-    position: absolute;
-    top:60px;
-    right:0px;
-    bottom:10px;
-    left:0px
+
+ng-view.has-news {
+    padding-bottom: 90px
 }
 
-div.main.has-news {
-    padding-bottom: 70px
-}
-
-div.main.has-news > ng-view {
-    bottom:70px;
-}
-
-ng-view.ng-enter { animation: fadeInUp 1s; }
-ng-view.ng-leave { animation: fadeOutUp 1s; }
+ng-view.ng-enter { animation: fadeIn 2s; position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;}
+ng-view.ng-leave { animation: fadeOut 2s; }
 
 footer.footer {
     position: fixed;
     bottom: 0px;
     left: 0px;
     right: 0px;
-    height: 70px;
+    height: 90px;
     margin-bottom: 0px;
     padding-top: 5px;
-    font-size: 40px;
+    font-size: 48px;
 }
-@keyframes ticker {
-    0% {
-        transform: translate3d(0, 0, 0);
-        visibility: visible;
-    }
-    100% {
-        transform: translate3d(-100%, 0, 0);
-    }
+
+.schedule table
+{
+    font-size: 200%;
 }
-footer.footer .news-scroller-wrap {
-    width: 100%;
-    overflow: hidden;
-    padding-left: 0%;
+
+.announcement
+{
 }
-footer.footer .news-scroller {
-    display: inline-block;
-    white-space: nowrap;
-    padding-left: 100%;
-    padding-right: 0%;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-    animation-name: ticker;
-    animation-duration: 50s;
-}
-footer.footer .news-scroller-item {
-    display: inline-block;
-}
-footer.footer .news-scroller-item:after {
-    content: " • ";
-    padding: 0 4rem;
-}
-footer.footer .news-scroller-item:last-child:after {
-    content: none;
-    padding: 0 4rem;
+
+.announcement p.content
+{
+    font-size: 200%;
+    margin-bottom: 80px;
 }
