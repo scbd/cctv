@@ -2,6 +2,9 @@ define(['app', 'lodash', 'moment-timezone', 'jquery', 'ngCookies', 'services/cac
 
     app.controller('TemplateController', ['$rootScope', '$http', '$cookies', '$timeout', '$q', '$location', 'cctvCache', function($rootScope, $http, $cookies, $timeout, $q, $location, cctvCache) {
 
+        if($location.path()!='/')
+            $location.path('/');
+
         var _streamData;
         var _frames;
         var _frameTimer;
