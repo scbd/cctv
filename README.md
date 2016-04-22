@@ -1,4 +1,3 @@
-# www-cbd-int
-Website of the Convention on Biological Diversity (AngularJS portions)
+# CCTV
 
-[![Dependency Status](https://david-dm.org/scbd/www.cbd.int.svg)](https://david-dm.org/scbd/www.cbd.int)
+[![Dependency Status](https://david-dm.org/scbd/cctv.svg)](https://david-dm.org/scbd/cctv)
