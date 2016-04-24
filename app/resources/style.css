@@ -2,7 +2,8 @@ body, html {
     height: 100%;
 }
 
-body::-webkit-scrollbar {
+body::-webkit-scrollbar,
+ng-view::-webkit-scrollbar {
     width: 0 !important
 }
 
@@ -10,12 +11,13 @@ body::-webkit-scrollbar {
 
 header.header {
     position: fixed;
-    top: -1px;
+    top: 1px;
     left: 0px;
     right: 0px;
     margin-bottom: 0px;
     z-index: 1000;
     font-size: 150%;
+    border-radius:0px
 }
 
 header.header .navbar-brand {
@@ -25,28 +27,25 @@ header.header .navbar-brand {
 /* CONTENT */
 
 ng-view  {
-    height: 100%;
     display: block;
+    position: absolute;
+    top: 60px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
     overflow-y: auto;
-    padding-top: 60px;
-    padding-bottom: 10px;
+}
+
+ng-view.has-news {
+    bottom: 90px;
 }
 
 ng-view.ng-enter {
     animation: fadeIn 2s;
-    position: absolute;
-    top: 0px;
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
 }
 
 ng-view.ng-leave {
     animation: fadeOut 2s;
-}
-
-ng-view.has-news {
-    padding-bottom: 90px
 }
 
 
@@ -57,10 +56,8 @@ ng-view.has-news {
 .announcement {
 }
 
-.announcement p.content
-{
+.announcement p.content {
     font-size: 200%;
-    margin-bottom: 80px;
 }
 
 div.middle,
@@ -81,7 +78,7 @@ div.middle > table > tbody > tr > td > p {
 /* NEWS */
 .news {
     position: fixed;
-    bottom: -1px;
+    bottom: 1px;
     left: 0px;
     right: 0px;
     height: 90px;
