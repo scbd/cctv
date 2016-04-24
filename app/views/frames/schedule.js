@@ -3,7 +3,6 @@ define(['moment-timezone', 'lodash', 'app', 'services/caches', 'services/context
 	return ['$scope', '$http', '$route', '$q', '$timeout', 'cctvCache', 'context', function($scope, $http, $route, $q, $timeout, cctvCache, context) {
 
         var _eventGroups_Venues_Maps = { '56ab766f2f4ad2ad1b885444' : '56d76c787e893e40650e4170' }; //TMP
-        var _timezone = "UTC";
 
         var _ctrl = this;
 
@@ -82,8 +81,8 @@ define(['moment-timezone', 'lodash', 'app', 'services/caches', 'services/context
                     var reservations = res.data;
 
                     reservations.forEach(function(r){
-                        r.start = moment.tz(r.start.replace(/Z$/, ''), _timezone).toDate(); // TMP:  Drop the 'Z' UTC timezone and assume local venue time
-                        r.end   = moment.tz(r.end  .replace(/Z$/, ''), _timezone).toDate(); // TMP:  Drop the 'Z' UTC timezone and assume local venue time
+                        r.start = moment.tz(r.start.replace(/Z$/, ''), context.venueTimezone()).toDate(); // TMP:  Drop the 'Z' UTC timezone and assume local venue time
+                        r.end   = moment.tz(r.end  .replace(/Z$/, ''), context.venueTimezone()).toDate(); // TMP:  Drop the 'Z' UTC timezone and assume local venue time
                     });
 
                     return reservations;
