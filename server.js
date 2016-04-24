@@ -18,7 +18,6 @@ app.use(require('morgan')('dev'));
 app.use('/app',   express.static(__dirname + '/app_build'));
 app.use('/app',   express.static(__dirname + '/app'));
 app.all('/app/*', (req, res) => res.status(404).send());
-app.all('/api/*', (req, res) => proxy.web(req, res, { target: 'http://localhost:8000',  secure:false } ));
 app.all('/api/*', (req, res) => proxy.web(req, res, { target: 'https://api.cbddev.xyz', changeOrigin: true } ));
 
 // CONFIGURE TEMPLATE
