@@ -79,7 +79,7 @@ div.middle > table > tbody > tr > td > p {
 }
 
 /* NEWS */
-footer.footer {
+.news {
     position: fixed;
     bottom: 0px;
     left: 0px;
@@ -88,4 +88,12 @@ footer.footer {
     margin-bottom: 0px;
     padding-top: 5px;
     font-size: 52px;
+}
+
+.news.ng-enter {
+    animation: fadeInUp 0.5s;
+}
+
+.news.ng-leave {
+    animation: fadeOutDown 0.5s;
 }

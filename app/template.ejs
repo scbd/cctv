@@ -39,13 +39,13 @@
 
     <ng-view ng-class="{ 'has-news' : templateCtrl.news }"></ng-view>
 
-    <footer class="ng-cloak footer navbar" ng-if="templateCtrl.news">
+    <div class="news navbar ng-cloak" ng-animate-swap="templateCtrl.news.content.title" ngX-if="templateCtrl.news" ng-click="templateCtrl.news=null">
         <div class="container-fluid">
 
             {{templateCtrl.news.content.title}}
 
         </div>
-    </footer>
+    </div>
 
 </body>
 
