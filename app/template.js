@@ -6,6 +6,9 @@ define(['app', 'lodash', 'moment-timezone', 'jquery', 'services/caches', 'servic
         if($location.path()!='/')
             $location.path('/');
 
+        if(!context.streamId())
+            $location.path('/help/not-configured');
+
         var _streamData;
         var _frames;
         var _frameTimer;
@@ -70,6 +73,9 @@ define(['app', 'lodash', 'moment-timezone', 'jquery', 'services/caches', 'servic
             }).catch(function(err){
 
                 console.error(err.data || err);
+
+                $location.path('/help/not-configured');
+
                 throw err;
             });
 
@@ -172,7 +178,7 @@ define(['app', 'lodash', 'moment-timezone', 'jquery', 'services/caches', 'servic
                     }
                 }
                 else
-                    $location.path('/event-information');
+                    $location.path('/help/event-information');
 
                 return frame;
 

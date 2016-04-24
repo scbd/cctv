@@ -2,7 +2,7 @@ define(['app', 'moment-timezone', 'ngCookies', 'services/caches'], function(app,
 
     app.provider('context', [function() {
 
-        var _timezones = {};
+        var _eventGroups = {};
 
         this.$get = ['$location', '$cookies', '$http', 'cctvCache', function($location, $cookies, $http, cctvCache){
 
@@ -10,7 +10,7 @@ define(['app', 'moment-timezone', 'ngCookies', 'services/caches'], function(app,
 
             if(!ready) {
                 ready = $http.get('/api/v2016/cctv-streams/'+streamId(), { cache: cctvCache }).then(function(res) {
-                    _timezones[streamId] = res.data.eventGroup.timezone;
+                    _eventGroups[streamId()] = res.data.eventGroup;
                     ready = true;
                     return ready;
                 });
@@ -21,6 +21,7 @@ define(['app', 'moment-timezone', 'ngCookies', 'services/caches'], function(app,
                 now      : now,
                 tomorrow : tomorrow,
                 venueTimezone : venueTimezone,
+                eventGroup : eventGroup,
                 ready : function() { return ready; }
             };
 
@@ -36,8 +37,12 @@ define(['app', 'moment-timezone', 'ngCookies', 'services/caches'], function(app,
                 return moment.tz(now(), venueTimezone()).add(1, 'days').startOf('day').toDate();
             }
 
+            function eventGroup() {
+                return _eventGroups[streamId()];
+            }
+
             function venueTimezone() {
-                return _timezones[streamId()];
+                return eventGroup() && eventGroup().timezone;
             }
         }];
     }]);
