@@ -1,6 +1,7 @@
-define(['app', 'lodash', 'moment-timezone', 'jquery', 'ngCookies', 'services/caches'], function(app, _, moment, $) { 'use strict';
+define(['app', 'lodash', 'moment-timezone', 'jquery', 'services/caches', 'services/context'], function(app, _, moment, $) { 'use strict';
 
-    app.controller('TemplateController', ['$rootScope', '$http', '$cookies', '$timeout', '$q', '$location', '$injector', 'cctvCache', function($rootScope, $http, $cookies, $timeout, $q, $location, $injector, cctvCache) {
+    app.controller('TemplateController', ['$rootScope', '$http', '$timeout', '$q', '$location', '$injector', 'cctvCache', 'context',
+                                  function($rootScope,   $http,   $timeout,   $q,   $location,   $injector,   cctvCache,   context) {
 
         if($location.path()!='/')
             $location.path('/');
@@ -26,8 +27,7 @@ define(['app', 'lodash', 'moment-timezone', 'jquery', 'ngCookies', 'services/cac
         //==============================
         function updateTime() {
 
-            _ctrl.now = new Date();
-
+            _ctrl.now = context.now();
             $timeout(updateTime, 1000*60);
         }
 
@@ -38,7 +38,7 @@ define(['app', 'lodash', 'moment-timezone', 'jquery', 'ngCookies', 'services/cac
 
             var params = $location.search();
 
-            var streamId = params.streamId;//$cookies.get('streamId');
+            var streamId = context.streamId();
             var options  = { params : { } };
 
             var previewDate = moment(params.datetime||'BAD');
@@ -217,7 +217,7 @@ define(['app', 'lodash', 'moment-timezone', 'jquery', 'ngCookies', 'services/cac
 
             if(top) {
                 $timeout(function () {
-                    $("ng-view").animate({ scrollTop: top }, timeout);
+                    $("ng-view").animate({ scrollTop: top }, { duration: timeout, easing: 'linear' });
                 }, 2000);
 
                 return timeout+2000+2000; //wait scroll wait

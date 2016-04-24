@@ -1,6 +1,6 @@
-define(['moment-timezone', 'lodash', 'app', 'services/caches'], function(moment, _) { "use strict";
+define(['moment-timezone', 'lodash', 'app', 'services/caches', 'services/context'], function(moment, _) { "use strict";
 
-	return ['$scope', '$http', '$route', '$q', '$timeout', '$location', 'cctvCache', function($scope, $http, $route, $q, $timeout, $location, cctvCache) {
+	return ['$scope', '$http', '$route', '$q', '$timeout', 'cctvCache', 'context', function($scope, $http, $route, $q, $timeout, cctvCache, context) {
 
         var _eventGroups_Venues_Maps = { '56ab766f2f4ad2ad1b885444' : '56d76c787e893e40650e4170' }; //TMP
         var _timezone = "UTC";
@@ -16,23 +16,21 @@ define(['moment-timezone', 'lodash', 'app', 'services/caches'], function(moment,
         //========================================
         function load() {
 
-            var params = $location.search();
-            var now    = moment(params.datetime||'BAD');
-            var tomorrow;
+            var venueId;
 
-            if(!now.isValid())
-                now = moment();
+            $q.when(context.ready()).then(function(){
 
-            return $http.get('/api/v2016/cctv-frames/'+$route.current.params.id, { cache : cctvCache }).then(function(res) {
+                return $http.get('/api/v2016/cctv-frames/'+$route.current.params.id, { cache : cctvCache });
+
+            }).then(function(res) {
 
                 _ctrl.frame = res.data;
 
-            }).then(function() {
+                return res.data;
 
-                var qDates = getQueryDates().then(function(res){
-                    now      = res.now;
-                    tomorrow = res.tomorrow;
-                });
+            }).then(function(frame) {
+
+                venueId = _eventGroups_Venues_Maps[frame.eventGroup];
 
                 var qTypes = $http.get('/api/v2016/reservation-types', { cache : cctvCache }).then(function(res) {
 
@@ -42,8 +40,6 @@ define(['moment-timezone', 'lodash', 'app', 'services/caches'], function(moment,
                     }, {});
                 });
 
-                var venueId = _eventGroups_Venues_Maps[_ctrl.frame.eventGroup];
-
                 var qRooms = $http.get('/api/v2016/venue-rooms', { params: { q: { venue : venueId } }, cache : cctvCache }).then(function(res) {
 
                     _ctrl.rooms = _.reduce(res.data, function(ret, r){
@@ -52,23 +48,34 @@ define(['moment-timezone', 'lodash', 'app', 'services/caches'], function(moment,
                     }, {});
                 });
 
-                return $q.all([qDates, qTypes, qRooms]);
+                return $q.all([qTypes, qRooms]).then(function(){
+                    return frame;
+                });
 
-            }).then(function() {
+            }).then(function(frame) {
 
-                var venueId = _eventGroups_Venues_Maps[_ctrl.frame.eventGroup];
-                var reservationTypes = _ctrl.frame.content.reservationTypes;
+                var reservationTypes = frame.content.reservationTypes;
+
+                // vvvvvvv TMP: values in DB are in UTC Format as local. we have to offset the UTC value to venue localtime
+
+                var now      = moment.tz(context.now(),      context.venueTimezone());
+                var tomorrow = moment.tz(context.tomorrow(), context.venueTimezone());
+
+                now      = moment.tz(now     .format('YYYY-MM-DDTHH:mm:ss'), 'UTC').toDate(); // TMP: offset the specified datetime UTC value to localtime
+                tomorrow = moment.tz(tomorrow.format('YYYY-MM-DDTHH:mm:ss'), 'UTC').toDate(); // TMP: offset the specified datetime UTC value to localtime
+
+                // ^^^^^^^^ TMP: values in DB are in UTC Format as local. we have to offset the UTC value to venue localtime
 
                 var query = {
                     "location.venue" : venueId,
                     "type" : { $in : reservationTypes },
                     "$and" : [
-                        { "end"  : { $gte : { $date : now     .toDate() } } },
-                        { "start": { $lt  : { $date : tomorrow.toDate() } } }
+                        { "end"  : { $gte : { $date : now      } } },
+                        { "start": { $lt  : { $date : tomorrow } } }
                     ]
                 };
 
-                var fields = { start:1, end:1, title: 1, type : 1, description : 1, location:1 };
+                var fields = { start:1, end:1, title: 1, type : 1, description : 1, location:1, 'sideEvent.title':1 };
 
                 return $http.get('/api/v2016/reservations', { params : { q : query, f : fields, s: { start:1 } } }).then(function(res) {
 
@@ -94,44 +101,6 @@ define(['moment-timezone', 'lodash', 'app', 'services/caches'], function(moment,
 
                 console.error(err.data || err);
                 completed();
-            });
-        }
-
-        //========================================
-        //
-        //========================================
-        function getQueryDates() {
-
-            return getVenueTimezone().then(function(timezone){
-
-                _timezone = timezone;
-
-                var now = moment($location.search().datetime||'BAD');
-                var tomorrow;
-
-                // HACK value in DB is stores as local.
-                // we have to offset the UTC value
-
-                now      = now.tz(timezone);
-                tomorrow = moment(now).add(1, 'days').hour(0).minute(0).second(0).millisecond(0);
-
-                now      = moment.tz(now     .format('YYYY-MM-DDTHH:mm:ss'), 'UTC'); // TMP: offset the specified datetime UTC value to localtime
-                tomorrow = moment.tz(tomorrow.format('YYYY-MM-DDTHH:mm:ss'), 'UTC'); // TMP: offset the specified datetime UTC value to localtime
-
-                return {
-                    now : now,
-                    tomorrow : tomorrow
-                };
-            });
-        }
-
-        //========================================
-        //
-        //========================================
-        function getVenueTimezone() {
-
-            return $http.get('/api/v2016/event-groups/'+_ctrl.frame.eventGroup, { cache : cctvCache }).then(function(res) {
-                return res.data.timezone;
             });
         }
 
