@@ -39,15 +39,11 @@ define(['app', 'lodash', 'moment-timezone', 'jquery', 'services/caches', 'servic
         //==============================
         function load() {
 
-            var params = $location.search();
-
             var streamId = context.streamId();
             var options  = { params : { } };
 
-            var previewDate = moment(params.datetime||'BAD');
-
-            if(previewDate.isValid())
-                options.params.datetime = previewDate.toDate();
+            if($location.search().datetime)
+                options.params.datetime = context.now();
 
             _streamData = $http.get('/api/v2016/cctv-streams/'+streamId, options).then(function(res) {
 
