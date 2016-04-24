@@ -1,7 +1,7 @@
 define(['app', 'lodash', 'moment-timezone', 'jquery', 'services/caches', 'services/context'], function(app, _, moment, $) { 'use strict';
 
-    app.controller('TemplateController', ['$rootScope', '$http', '$timeout', '$q', '$location', '$injector', 'cctvCache', 'context',
-                                  function($rootScope,   $http,   $timeout,   $q,   $location,   $injector,   cctvCache,   context) {
+    app.controller('TemplateController', ['$rootScope', '$http', '$timeout', '$interval', '$q', '$location', '$injector', 'cctvCache', 'context',
+                                  function($rootScope,   $http,   $timeout,   $interval,   $q,   $location,   $injector,   cctvCache,   context) {
 
         if($location.path()!='/')
             $location.path('/');
@@ -25,13 +25,13 @@ define(['app', 'lodash', 'moment-timezone', 'jquery', 'services/caches', 'servic
         nextFrame();
         nextNews();
 
+        $interval(updateTime, 1000*15);
+
         //==============================
         //
         //==============================
         function updateTime() {
-
             _ctrl.now = context.now();
-            $timeout(updateTime, 1000*60);
         }
 
         //==============================
