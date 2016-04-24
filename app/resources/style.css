@@ -6,6 +6,8 @@ body::-webkit-scrollbar {
     width: 0 !important
 }
 
+/* HEADER */
+
 header.header {
     position: fixed;
     top: 0px;
@@ -14,11 +16,13 @@ header.header {
     margin-bottom: 0px;
     z-index: 1000;
     font-size: 150%;
+}
 
-}
 header.header .navbar-brand {
-    font-size: 100%;
+    font-size: 150%;
 }
+
+/* CONTENT */
 
 ng-view  {
     height: 100%;
@@ -28,13 +32,39 @@ ng-view  {
     padding-bottom: 10px;
 }
 
+ng-view.ng-enter {
+    animation: fadeIn 2s;
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+}
+
+ng-view.ng-leave {
+    animation: fadeOut 2s;
+}
+
 ng-view.has-news {
     padding-bottom: 90px
 }
 
-ng-view.ng-enter { animation: fadeIn 2s; position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;}
-ng-view.ng-leave { animation: fadeOut 2s; }
 
+.schedule table {
+    font-size: 200%;
+}
+
+.announcement {
+}
+
+.announcement p.content
+{
+    font-size: 200%;
+    margin-bottom: 80px;
+}
+
+
+/* NEWS */
 footer.footer {
     position: fixed;
     bottom: 0px;
@@ -43,20 +73,5 @@ footer.footer {
     height: 90px;
     margin-bottom: 0px;
     padding-top: 5px;
-    font-size: 48px;
-}
-
-.schedule table
-{
-    font-size: 200%;
-}
-
-.announcement
-{
-}
-
-.announcement p.content
-{
-    font-size: 200%;
-    margin-bottom: 80px;
+    font-size: 52px;
 }

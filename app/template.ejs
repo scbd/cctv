@@ -19,15 +19,18 @@
 
 <body>
     <header class="header navbar">
-        <div class="containerDIABLED">
+        <div>
             <div class="navbar-header">
                 <img src="app/resources/images/cbd-leaf-white.svg" style="float:left;height:45px;margin-left:12px;">
-                <a class="navbar-brand" ng-cloak>{{templateCtrl.eventGroup.Title.en}}</a>
+                <span class="navbar-brand" ng-cloak>{{templateCtrl.eventGroup.Title.en}}</span>
             </div>
             <nav class="navbar-collapse" ng-cloak>
                 <ul class="nav navbar-nav navbar-right hidden-xs">
                     <li>
-                        <a>{{templateCtrl.now | date:'EEEE, d MMMM'}} <b>{{templateCtrl.now | date:'HH:mm'}}</b></a>
+                        <a>
+                            <span class="text-muted">{{templateCtrl.now | date:'EEEE, d MMMM'}}</span>
+                            <span>{{templateCtrl.now | date:'H:mm'}}</span>
+                        </a>
                     </li>
                 </ul>
             </nav>
