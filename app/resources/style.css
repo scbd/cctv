@@ -10,7 +10,7 @@ body::-webkit-scrollbar {
 
 header.header {
     position: fixed;
-    top: 0px;
+    top: -1px;
     left: 0px;
     right: 0px;
     margin-bottom: 0px;
@@ -81,7 +81,7 @@ div.middle > table > tbody > tr > td > p {
 /* NEWS */
 .news {
     position: fixed;
-    bottom: 0px;
+    bottom: -1px;
     left: 0px;
     right: 0px;
     height: 90px;

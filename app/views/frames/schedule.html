@@ -6,14 +6,13 @@
     <table class="table table-striped">
         <tr ng-repeat="r in scheduleCtrl.reservations">
             <td class="time" style="width:100px">
-                {{r.start | date:'HH:mm'}}<br>
-                <span class="text-muted">{{r.end | date:'HH:mm' }}</span>
+                {{r.start | date:'HH:mm'}}
             </td>
             <td>
                 <b class="room">{{scheduleCtrl.rooms[r.location.room].title}}</b>
                 <div class="title" style="max-height:4.2em;overflow-y:hidden;text-overflow: ellipsis">{{r.sideEvent.title || r.title}}</div>
             </td>
-            <td style="width:100px"><b>{{scheduleCtrl.types[r.type].title}}</b></td>
+            <td style="width:100px">{{scheduleCtrl.types[r.type].title}}</td>
         </tr>
     </table>
 </div>
