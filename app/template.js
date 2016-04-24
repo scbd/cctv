@@ -180,7 +180,7 @@ define(['app', 'lodash', 'moment-timezone', 'jquery', 'services/caches', 'servic
 
             }).then(function(frame) {
 
-                setFrameTimer(frame.timeout || 10000); // backup refresh
+                setFrameTimer((frame && frame.timeout) || 10000); // backup refresh
 
                 return frame;
 
