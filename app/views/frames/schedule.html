@@ -1,10 +1,13 @@
 <div class="schedule" auto-scroll="{ orientation : 'y', speed:50, open:4000 }" auto-scroll-on="!!scheduleCtrl.reservations" auto-scroll-complete="scheduleCtrl.completed()">
+<div class="container">
+    <h1 class="text-center">{{scheduleCtrl.frame.content.title}}</h1>
+</div>
+
 <div class="container-fluid">
 
-    <h1 class="text-center">{{scheduleCtrl.frame.content.title}}</h1>
 
     <table class="table table-striped">
-        <tr ng-repeat="r in scheduleCtrl.reservations">
+        <tr class="schedule-item" ng-repeat="r in scheduleCtrl.reservations">
             <td class="time" style="width:100px">
                 {{r.start | date:'HH:mm'}}
             </td>
@@ -14,6 +17,11 @@
             </td>
             <td style="width:100px">{{scheduleCtrl.types[r.type].title}}</td>
         </tr>
+        <tr ng-if="scheduleCtrl.reservations.length===0">
+            <td class=" text-center">There are no upcoming events at this time</td>
+        </tr>
+
+
     </table>
 </div>
 </div>
