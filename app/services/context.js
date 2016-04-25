@@ -26,7 +26,7 @@ define(['app', 'moment-timezone', 'ngCookies', 'services/caches'], function(app,
             };
 
             function streamId() {
-                return $location.search().streamId || $cookies.get('streamId');
+                return $location.search().streamId || $cookies.get('streamId') || '6632294138146144';
             }
 
             function now() {
