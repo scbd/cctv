@@ -1,10 +1,12 @@
-define(['moment-timezone', 'lodash', 'app', 'services/caches', 'services/context'], function(moment, _) { "use strict";
+define(['moment-timezone', 'lodash', 'app', 'directives/auto-scroll', 'services/caches', 'services/context'], function(moment, _) { "use strict";
 
 	return ['$scope', '$http', '$route', '$q', '$timeout', 'cctvCache', 'context', function($scope, $http, $route, $q, $timeout, cctvCache, context) {
 
         var _eventGroups_Venues_Maps = { '56ab766f2f4ad2ad1b885444' : '56d76c787e893e40650e4170' }; //TMP
 
         var _ctrl = this;
+
+        _ctrl.completed = completed;
 
         load();
 
@@ -92,23 +94,11 @@ define(['moment-timezone', 'lodash', 'app', 'services/caches', 'services/context
 
                 _ctrl.reservations = reservations;
 
-            }).then(function() {
-
-                ready(Math.max(10000, _ctrl.reservations.lenght*1000));
-
             }).catch(function(err) {
 
                 console.error(err.data || err);
                 completed();
             });
-        }
-
-        //========================================
-        //
-        //========================================
-        function ready(timeout) {
-
-            $scope.$emit('frameReady', _ctrl.frame, timeout);
         }
 
         //========================================

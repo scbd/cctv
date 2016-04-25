@@ -1,8 +1,8 @@
-<div class="jumbotron announcement">
+<div class="jumbotron announcement" auto-scroll="{ orientation : 'y' }" auto-scroll-on="!!announcementCtrl.frame" auto-scroll-complete="announcementCtrl.completed()">
     <div class="container">
 
-        <h1>{{announcementCtrl.frame.content.title|| 'Announcement' }}</h1>
+        <h1 class="text-center">{{announcementCtrl.frame.content.title|| 'Announcement' }}</h1>
 
-        <p class="content" ng-bind-html="announcementCtrl.frame.content.html | sanitizeHtml "></p>
+        <p class="announcement-content" ng-bind-html="announcementCtrl.frame.content.html | sanitizeHtml "></p>
     </div>
 </div>

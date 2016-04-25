@@ -2,11 +2,6 @@ body, html {
     height: 100%;
 }
 
-body::-webkit-scrollbar,
-ng-view::-webkit-scrollbar {
-    width: 0 !important
-}
-
 /* HEADER */
 
 header.header {
@@ -36,17 +31,16 @@ ng-view  {
     overflow-y: auto;
 }
 
+ng-view::-webkit-scrollbar {
+    width: 0 !important;
+}
+
 ng-view.has-news {
     bottom: 90px;
 }
 
-ng-view.ng-enter {
-    animation: fadeIn 2s;
-}
-
-ng-view.ng-leave {
-    animation: fadeOut 2s;
-}
+ng-view.ng-enter { animation: fadeIn  2s; }
+ng-view.ng-leave { animation: fadeOut 2s; }
 
 
 .schedule table {
@@ -56,7 +50,7 @@ ng-view.ng-leave {
 .announcement {
 }
 
-.announcement p.content {
+.announcement .announcement-content {
     font-size: 200%;
 }
 
@@ -78,19 +72,25 @@ div.middle > table > tbody > tr > td > p {
 /* NEWS */
 .news {
     position: fixed;
-    bottom: 1px;
+    bottom: -1px;
     left: 0px;
     right: 0px;
     height: 90px;
-    margin-bottom: 0px;
-    padding-top: 5px;
+    padding: 5px 10px;
+    margin: 0px;
     font-size: 52px;
+    overflow-x: auto;
+    border-radius:0px
+}
+.news::-webkit-scrollbar {
+    height: 0 !important;
 }
 
-.news.ng-enter {
-    animation: fadeInUp 0.5s;
-}
+.news.ng-enter { animation: fadeInUp    0.5s; }
+.news.ng-leave { animation: fadeOutDown 0.5s; }
 
-.news.ng-leave {
-    animation: fadeOutDown 0.5s;
+.news .news-content {
+    white-space: nowrap;
+    display: inline-block;
+    padding-right: 5px;
 }

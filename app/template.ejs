@@ -39,11 +39,9 @@
 
     <ng-view ng-class="{ 'has-news' : templateCtrl.news }"></ng-view>
 
-    <div class="news navbar ng-cloak" ng-animate-swap="templateCtrl.news.content.title" ngX-if="templateCtrl.news" ng-click="templateCtrl.news=null">
-        <div class="container-fluid">
-
+    <div class="news navbar ng-cloak" ng-animate-swap="templateCtrl.news">
+        <div class="news-content" auto-scroll="{ orientation : 'x', autoReset:true, speed:125, open:3000, timeout:8000 }" auto-scroll-on="templateCtrl.news.content.title" auto-scroll-complete="templateCtrl.nextNews()" >
             {{templateCtrl.news.content.title}}
-
         </div>
     </div>
 

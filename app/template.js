@@ -1,4 +1,4 @@
-define(['app', 'lodash', 'moment-timezone', 'jquery', 'services/caches', 'services/context'], function(app, _, moment, $) { 'use strict';
+define(['app', 'lodash', 'directives/auto-scroll', 'services/caches', 'services/context'], function(app, _) { 'use strict';
 
     app.controller('TemplateController', ['$rootScope', '$http', '$timeout', '$interval', '$q', '$location', '$injector', 'cctvCache', 'context',
                                   function($rootScope,   $http,   $timeout,   $interval,   $q,   $location,   $injector,   cctvCache,   context) {
@@ -16,6 +16,8 @@ define(['app', 'lodash', 'moment-timezone', 'jquery', 'services/caches', 'servic
         var _newsTimer;
 
         var _ctrl = this;
+
+        _ctrl.nextNews = nextNews;
 
         $rootScope.$on('frameReady',     function(evt, f, t) { frameReady    (f, t); } );
         $rootScope.$on('frameCompleted', function(evt, f)    { frameCompleted(f);    } );
@@ -103,7 +105,7 @@ define(['app', 'lodash', 'moment-timezone', 'jquery', 'services/caches', 'servic
 
             }).then(function(news) {
 
-                setNewsTimer(news ? 10000 : 2000); // backup refresh
+                setNewsTimer(news ? 60000 : 2000); // backup refresh
 
                 return news;
 
@@ -180,7 +182,7 @@ define(['app', 'lodash', 'moment-timezone', 'jquery', 'services/caches', 'servic
 
             }).then(function(frame) {
 
-                setFrameTimer((frame && frame.timeout) || 10000); // backup refresh
+                setFrameTimer(frame ? 60000 : 5000); // backup refresh
 
                 return frame;
 
@@ -213,44 +215,11 @@ define(['app', 'lodash', 'moment-timezone', 'jquery', 'services/caches', 'servic
         //==============================
         //
         //==============================
-        function autoScroll(timeout) {
-
-            var top = neededScroll();
-
-            if(top) {
-                $timeout(function () {
-                    $("ng-view").animate({ scrollTop: top }, { duration: timeout, easing: 'linear' });
-                }, 2000);
-
-                return timeout+2000+2000; //wait scroll wait
-            }
-
-            return timeout;
-        }
-
-        //==============================
-        //
-        //==============================
-        function neededScroll() {
-
-            var view    = $("ng-view:last").height();
-            var content = $("ng-view:last > :first-child").height();
-
-            return Math.max(content - view, 0);
-        }
-
-        //==============================
-        //
-        //==============================
         function frameReady(frame, timeout) {
 
             $rootScope.$applyAsync(function(){
 
                 timeout = timeout || frame.timeout || 10*1000;
-
-                if(neededScroll()) {
-                    timeout = autoScroll(timeout);
-                }
 
                 setFrameTimer(timeout);
             });

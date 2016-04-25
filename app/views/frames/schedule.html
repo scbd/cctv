@@ -1,7 +1,7 @@
-<div class="schedule">
-<div class="container">
+<div class="schedule" auto-scroll="{ orientation : 'y', speed:50, open:4000 }" auto-scroll-on="!!scheduleCtrl.reservations" auto-scroll-complete="scheduleCtrl.completed()">
+<div class="container-fluid">
 
-    <h1>{{scheduleCtrl.frame.content.title}}</h1>
+    <h1 class="text-center">{{scheduleCtrl.frame.content.title}}</h1>
 
     <table class="table table-striped">
         <tr ng-repeat="r in scheduleCtrl.reservations">

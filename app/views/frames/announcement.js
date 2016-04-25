@@ -1,8 +1,10 @@
-define(['app', 'services/caches', 'filters/html-sanitizer'], function() { "use strict";
+define(['app', 'directives/auto-scroll', 'services/caches', 'filters/html-sanitizer'], function() { "use strict";
 
 	return ['$scope', '$http', '$route', '$timeout', 'cctvCache', function($scope, $http, $route, $timeout, cctvCache) {
 
         var _ctrl = this;
+
+        _ctrl.completed = completed;
 
         load();
 
@@ -17,23 +19,11 @@ define(['app', 'services/caches', 'filters/html-sanitizer'], function() { "use s
 
                 _ctrl.frame = res.data;
 
-            }).then(function(){
-
-                ready(_ctrl.frame.timeout);
-
             }).catch(function(err){
 
                 console.error(err.data || err);
                 completed();
             });
-        }
-
-        //========================================
-        //
-        //========================================
-        function ready(timeout) {
-
-            $scope.$emit('frameReady', _ctrl.frame, timeout);
         }
 
         //========================================
