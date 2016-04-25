@@ -47,6 +47,10 @@ ng-view.ng-leave { animation: fadeOut 2s; }
     font-size: 200%;
 }
 
+.schedule .schedule-item.ng-enter {
+    animation: fadeInDown 1s;
+}
+
 .announcement {
 }
 

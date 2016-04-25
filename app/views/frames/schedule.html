@@ -1,27 +1,37 @@
 <div class="schedule" auto-scroll="{ orientation : 'y', speed:50, open:4000 }" auto-scroll-on="!!scheduleCtrl.reservations" auto-scroll-complete="scheduleCtrl.completed()">
-<div class="container">
-    <h1 class="text-center">{{scheduleCtrl.frame.content.title}}</h1>
-</div>
+    <div class="container">
+        <h1 class="text-center">{{::scheduleCtrl.frame.content.title}}</h1>
+    </div>
 
-<div class="container-fluid">
+    <div class="container-fluid">
 
+        <table class="table table-striped">
 
-    <table class="table table-striped">
-        <tr class="schedule-item" ng-repeat="r in scheduleCtrl.reservations">
-            <td class="time" style="width:100px">
-                {{r.start | date:'HH:mm'}}
-            </td>
-            <td>
-                <b class="room">{{scheduleCtrl.rooms[r.location.room].title}}</b>
-                <div class="title" style="max-height:4.2em;overflow-y:hidden;text-overflow: ellipsis">{{r.sideEvent.title || r.title}}</div>
-            </td>
-            <td style="width:100px">{{scheduleCtrl.types[r.type].title}}</td>
-        </tr>
-        <tr ng-if="scheduleCtrl.reservations.length===0">
-            <td class=" text-center">There are no upcoming events at this time</td>
-        </tr>
+            <tr class="schedule-item" ng-repeat="r in scheduleCtrl.reservations">
+                <td class="schedule-item-time" style="width:100px">
+                    {{::r.start | date:'HH:mm'}}
+                </td>
+                <td>
+                    <div class="schedule-item-type pull-right small">
+                        {{::scheduleCtrl.types[r.type].title}}
+                        <div ng-if="r.sideEvent" class="hidden-xs text-muted text-right"><em>{{::r.title}}</em></div>
+                    </div>
 
+                    <div class="schedule-item-location">
+                        <b class="room">{{::scheduleCtrl.rooms[r.location.room].title}}</b>
+                        <em class="small">{{::scheduleCtrl.rooms[r.location.room].location}}</em>
+                    </div>
 
-    </table>
-</div>
+                    <div class="schedule-item-title" style="max-height:4.2em;overflow-y:hidden;text-overflow: ellipsis">
+                        {{::r.sideEvent.title || r.title}}
+                    </div>
+                </td>
+            </tr>
+
+            <tr ng-if="scheduleCtrl.reservations.length===0">
+                <td class=" text-center">There are no upcoming events at this time</td>
+            </tr>
+
+        </table>
+    </div>
 </div>
