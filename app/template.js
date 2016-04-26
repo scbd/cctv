@@ -1,4 +1,4 @@
-define(['app', 'lodash', 'directives/auto-scroll', 'services/caches', 'services/context'], function(app, _) { 'use strict';
+define(['app', 'lodash', 'directives/no-cursor', 'directives/auto-scroll', 'services/caches', 'services/context'], function(app, _) { 'use strict';
 
     app.controller('TemplateController', ['$rootScope', '$http', '$timeout', '$interval', '$q', '$location', '$injector', 'cctvCache', 'context',
                                   function($rootScope,   $http,   $timeout,   $interval,   $q,   $location,   $injector,   cctvCache,   context) {
