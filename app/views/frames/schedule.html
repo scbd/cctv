@@ -3,35 +3,44 @@
         <h1 class="text-center">{{::scheduleCtrl.frame.content.title}}</h1>
     </div>
 
-    <div class="container-fluid">
+    <div class="container-fluid" ng-init="levels={ warning : 'warning', alert : 'danger' } ">
 
         <table class="table table-striped">
-
-            <tr class="schedule-item" ng-repeat="r in scheduleCtrl.reservations">
-                <td class="schedule-item-time" style="width:100px">
-                    {{::r.start | date:'HH:mm'}}
-                </td>
+            <tr class="schedule-item {{levels[r.message.level]}}" ng-repeat="r in scheduleCtrl.reservations">
                 <td>
-                    <div class="schedule-item-type pull-right small">
-                        {{::scheduleCtrl.types[r.type].title}}
-                        <div ng-if="r.sideEvent" class="hidden-xs text-muted text-right"><em>{{::r.title}}</em></div>
-                    </div>
+                    <table class="table">
+                        <tr>
+                            <td class="schedule-item-time" style="width:100px">
+                                {{::r.start | date:'HH:mm'}}
+                            </td>
+                            <td>
+                                <div class="schedule-item-type pull-right small">
+                                    <span class="text-{{scheduleCtrl.types[r.type].style}}">{{::scheduleCtrl.types[r.type].title}}</span>
+                                    <div ng-if="r.sideEvent" class="hidden-xs text-muted text-right"><em>{{::r.title}}</em></div>
+                                </div>
 
-                    <div class="schedule-item-location">
-                        <b class="room">{{::scheduleCtrl.rooms[r.location.room].title}}</b>
-                        <em class="small">{{::scheduleCtrl.rooms[r.location.room].location}}</em>
-                    </div>
+                                <div class="schedule-item-location">
+                                    <b class="room">{{::scheduleCtrl.rooms[r.location.room].title}}</b>
+                                    <em class="small">{{::scheduleCtrl.rooms[r.location.room].location}}</em>
+                                </div>
 
-                    <div class="schedule-item-title" style="max-height:4.2em;overflow-y:hidden;text-overflow: ellipsis">
-                        {{::r.sideEvent.title || r.title}}
-                    </div>
+                                <div class="schedule-item-title" style="max-height:4.2em;overflow-y:hidden;text-overflow: ellipsis">
+                                    {{::r.sideEvent.title || r.title}}
+                                </div>
+                            </td>
+                        </tr>
+
+
+                    </table>
+
+                    <div class="schedule-item-message">{{r.message.text}}</div>
+
                 </td>
             </tr>
-
-            <tr ng-if="scheduleCtrl.reservations.length===0">
-                <td class=" text-center">There are no upcoming events at this time</td>
-            </tr>
-
         </table>
+
+        <div class="schedule-item text-center" ng-if="scheduleCtrl.reservations.length===0">
+            There are no upcoming events at this time
+        </div>
     </div>
 </div>

@@ -45,8 +45,43 @@ ng-view.ng-enter { animation: fadeIn  2s; }
 ng-view.ng-leave { animation: fadeOut 2s; }
 
 
-.schedule table {
+.schedule .schedule-item{
     font-size: 200%;
+}
+
+.schedule .schedule-item > td > table > tbody > tr > td {
+    border: none !important;
+}
+
+.schedule .schedule-item  > td > table {
+    margin-bottom: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.schedule .schedule-item  > td {
+    padding-bottom: 3px;
+}
+
+.schedule .schedule-item  > td > table {
+    margin-bottom: 0px;
+}
+
+.schedule .schedule-item:not(.success):not(.info):not(.warning):not(.danger)  > td > table {
+    background-color: inherit;
+    margin-bottom: 0px;
+}
+
+.schedule .schedule-item  .schedule-item-message {
+    text-align: center;
+    font-size: 80%;
+    font-weight: bold;
+}
+.schedule .schedule-item.success .schedule-item-message,
+.schedule .schedule-item.info    .schedule-item-message,
+.schedule .schedule-item.warning .schedule-item-message,
+.schedule .schedule-item.danger  .schedule-item-message {
+    color: #272b30;
 }
 
 .schedule .schedule-item.ng-enter {

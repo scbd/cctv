@@ -7,7 +7,7 @@ define(['moment-timezone', 'lodash', 'app', 'directives/auto-scroll', 'services/
         var _ctrl = this;
 
         _ctrl.completed = completed;
-
+    
         load();
 
         return this;
@@ -76,8 +76,16 @@ define(['moment-timezone', 'lodash', 'app', 'directives/auto-scroll', 'services/
                     ]
                 };
 
-                var fields = { start:1, end:1, title: 1, type : 1, description : 1, location:1, 'sideEvent.title':1 };
-
+                var fields = {
+                    start: 1,
+                    end: 1,
+                    title: 1,
+                    type: 1,
+                    description: 1,
+                    location: 1,
+                    message: 1,
+                    'sideEvent.title': 1
+                };
                 return $http.get('/api/v2016/reservations', { params : { q : query, f : fields, s: { start:1 } } }).then(function(res) {
 
                     var reservations = res.data;
