@@ -39,8 +39,8 @@
 
     <ng-view ng-class="{ 'has-news' : templateCtrl.news }"></ng-view>
 
-    <div class="news navbar ng-cloak" ng-animate-swap="templateCtrl.news">
-        <div class="news-content" auto-scroll="{ orientation : 'x', autoReset:true, speed:125, open:3000, timeout:8000 }" auto-scroll-on="templateCtrl.news" auto-scroll-complete="templateCtrl.newsCompleted()" >
+    <div class="news panel ng-cloak" ng-animate-swap="templateCtrl.news" ng-init="newsLevels={ warning : 'text-warning', alert : 'text-danger' } ">
+        <div class="news-content {{newsLevels[templateCtrl.news.content.level]}}" auto-scroll="{ orientation : 'x', autoReset:true, speed:125, open:3000, timeout:8000 }" auto-scroll-on="templateCtrl.news" auto-scroll-complete="templateCtrl.newsCompleted()" >
             {{templateCtrl.news.content.title}}
         </div>
     </div>
