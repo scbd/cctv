@@ -78,7 +78,7 @@ div.middle > table > tbody > tr > td > p {
 /* NEWS */
 .news {
     position: fixed;
-    bottom: -1px;
+    bottom: 0px;
     left: 0px;
     right: 0px;
     height: 90px;
