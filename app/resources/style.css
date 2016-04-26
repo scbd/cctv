@@ -12,7 +12,9 @@ header.header {
     margin-bottom: 0px;
     z-index: 1000;
     font-size: 150%;
-    border-radius:0px
+    border-radius:0px;
+    height: 55px;
+
 }
 
 header.header .navbar-brand {
@@ -24,7 +26,7 @@ header.header .navbar-brand {
 ng-view  {
     display: block;
     position: absolute;
-    top: 60px;
+    top: 55px;
     bottom: 0px;
     left: 0px;
     right: 0px;
