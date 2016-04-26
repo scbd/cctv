@@ -1,6 +1,6 @@
-define(['app', 'directives/auto-scroll', 'services/caches', 'filters/html-sanitizer'], function() { "use strict";
+define(['app', 'directives/auto-scroll', 'services/caches', 'services/cctv-stream', 'filters/html-sanitizer'], function() { "use strict";
 
-	return ['$scope', '$http', '$route', '$timeout', 'cctvCache', function($scope, $http, $route, $timeout, cctvCache) {
+	return ['$scope', '$http', '$route', '$timeout', 'cctvCache', 'cctvStream', function($scope, $http, $route, $timeout, cctvCache, cctvStream) {
 
         var _ctrl = this;
 
@@ -30,8 +30,7 @@ define(['app', 'directives/auto-scroll', 'services/caches', 'filters/html-saniti
         //
         //========================================
         function completed() {
-
-            $scope.$emit('frameCompleted', _ctrl.frame);
+            cctvStream.completed(_ctrl.frame);
         }
 
 	}];

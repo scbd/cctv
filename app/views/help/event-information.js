@@ -1,13 +1,13 @@
-define(['app', 'services/context', 'services/caches'], function() { "use strict";
+define(['app', 'services/cctv-stream', 'services/caches'], function() { "use strict";
 
-	return ['$q', 'context', function($q, context) {
+	return ['cctvStream', function(cctvStream) {
 
         var _ctrl = this;
 
-        $q.when(context.ready()).then(function(){
+        cctvStream.initialize().then(function(){
 
-            _ctrl.eventGroup   = context.eventGroup();
-            _ctrl.descriptions = context.eventGroup().Description.en.split('\n');
+            _ctrl.eventGroup   = cctvStream.event;
+            _ctrl.descriptions = cctvStream.event.Description.en.split('\n');
 
         });
 

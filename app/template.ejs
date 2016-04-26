@@ -22,7 +22,7 @@
         <div ng-cloak>
             <div class="navbar-header">
                 <img src="app/resources/images/cbd-leaf-white.svg" style="float:left;height:45px;margin-left:12px;">
-                <span class="navbar-brand" ng-cloak>{{templateCtrl.eventGroup.Title.en}}</span>
+                <span class="navbar-brand" ng-cloak>{{templateCtrl.event.Title.en}}</span>
             </div>
             <nav class="navbar-collapse" ng-cloak>
                 <ul class="nav navbar-nav navbar-right hidden-xs">
@@ -40,7 +40,7 @@
     <ng-view ng-class="{ 'has-news' : templateCtrl.news }"></ng-view>
 
     <div class="news navbar ng-cloak" ng-animate-swap="templateCtrl.news">
-        <div class="news-content" auto-scroll="{ orientation : 'x', autoReset:true, speed:125, open:3000, timeout:8000 }" auto-scroll-on="templateCtrl.news.content.title" auto-scroll-complete="templateCtrl.nextNews()" >
+        <div class="news-content" auto-scroll="{ orientation : 'x', autoReset:true, speed:125, open:3000, timeout:8000 }" auto-scroll-on="templateCtrl.news" auto-scroll-complete="templateCtrl.newsCompleted()" >
             {{templateCtrl.news.content.title}}
         </div>
     </div>

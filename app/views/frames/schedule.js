@@ -1,6 +1,6 @@
-define(['moment-timezone', 'lodash', 'app', 'directives/auto-scroll', 'services/caches', 'services/context'], function(moment, _) { "use strict";
+define(['moment-timezone', 'lodash', 'app', 'directives/auto-scroll', 'services/caches', 'services/cctv-stream'], function(moment, _) { "use strict";
 
-	return ['$scope', '$http', '$route', '$q', '$timeout', 'cctvCache', 'context', function($scope, $http, $route, $q, $timeout, cctvCache, context) {
+	return ['$scope', '$http', '$route', '$q', '$timeout', 'cctvCache', 'cctvStream', function($scope, $http, $route, $q, $timeout, cctvCache, cctvStream) {
 
         var _eventGroups_Venues_Maps = { '56ab766f2f4ad2ad1b885444' : '56d76c787e893e40650e4170' }; //TMP
 
@@ -19,7 +19,7 @@ define(['moment-timezone', 'lodash', 'app', 'directives/auto-scroll', 'services/
 
             var venueId;
 
-            $q.when(context.ready()).then(function(){
+            cctvStream.initialize().then(function(){
 
                 return $http.get('/api/v2016/cctv-frames/'+$route.current.params.id, { cache : cctvCache });
 
@@ -59,8 +59,8 @@ define(['moment-timezone', 'lodash', 'app', 'directives/auto-scroll', 'services/
 
                 // vvvvvvv TMP: values in DB are in UTC Format as local. we have to offset the UTC value to venue localtime
 
-                var now      = moment.tz(context.now(),      context.venueTimezone());
-                var tomorrow = moment.tz(context.tomorrow(), context.venueTimezone());
+                var now      = moment.tz(cctvStream.now(),      cctvStream.event.timezone);
+                var tomorrow = moment.tz(cctvStream.tomorrow(), cctvStream.event.timezone);
 
                 now      = moment.tz(now     .format('YYYY-MM-DDTHH:mm:ss'), 'UTC').toDate(); // TMP: offset the specified datetime UTC value to localtime
                 tomorrow = moment.tz(tomorrow.format('YYYY-MM-DDTHH:mm:ss'), 'UTC').toDate(); // TMP: offset the specified datetime UTC value to localtime
@@ -83,8 +83,8 @@ define(['moment-timezone', 'lodash', 'app', 'directives/auto-scroll', 'services/
                     var reservations = res.data;
 
                     reservations.forEach(function(r){
-                        r.start = moment.tz(r.start.replace(/Z$/, ''), context.venueTimezone()).toDate(); // TMP:  Drop the 'Z' UTC timezone and assume local venue time
-                        r.end   = moment.tz(r.end  .replace(/Z$/, ''), context.venueTimezone()).toDate(); // TMP:  Drop the 'Z' UTC timezone and assume local venue time
+                        r.start = moment.tz(r.start.replace(/Z$/, ''), cctvStream.event.timezone).toDate(); // TMP:  Drop the 'Z' UTC timezone and assume local venue time
+                        r.end   = moment.tz(r.end  .replace(/Z$/, ''), cctvStream.event.timezone).toDate(); // TMP:  Drop the 'Z' UTC timezone and assume local venue time
                     });
 
                     return reservations;
@@ -106,7 +106,7 @@ define(['moment-timezone', 'lodash', 'app', 'directives/auto-scroll', 'services/
         //========================================
         function completed() {
 
-            $scope.$emit('frameCompleted', _ctrl.frame);
+            cctvStream.completed(_ctrl.frame);
         }
 	}];
 });
