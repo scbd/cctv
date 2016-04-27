@@ -137,6 +137,10 @@ div.middle > table > tbody > tr > td > p {
 .news.ng-enter { animation: fadeInUp    0.5s; }
 .news.ng-leave { animation: fadeOutDown 0.5s; }
 
+.news {
+    color:white;
+}
+
 .news .news-content {
     white-space: nowrap;
     display: inline-block;
