@@ -11,7 +11,7 @@ define(['app', 'directives/no-cursor', 'directives/auto-scroll', 'services/cache
 
         var _ctrl = this;
 
-        _ctrl.newsCompleted = newsCompleted;
+        _ctrl.completed  = completed;
 
         updateTime();
         $interval(updateTime, 1000*15);
@@ -45,6 +45,8 @@ define(['app', 'directives/no-cursor', 'directives/auto-scroll', 'services/cache
         //==============================
         function nextFrame(frame) {
 
+            _ctrl.frame = frame;
+
             var lastRoute = $location.path();
 
             $location.path('/'+frame.content.type+'/'+frame._id);
@@ -59,9 +61,9 @@ define(['app', 'directives/no-cursor', 'directives/auto-scroll', 'services/cache
         //==============================
         //
         //==============================
-        function newsCompleted() {
-            if(_ctrl.news)
-                _ctrl.news.completed();
+        function completed(frame) {
+            if(frame)
+                frame.completed();
         }
 
         //==============================
