@@ -89,10 +89,12 @@ ng-view.ng-leave { animation: fadeOut 2s; }
 }
 
 .announcement {
+    padding-top: 50px;
 }
 
 .announcement .announcement-content {
     font-size: 200%;
+    color:white;
 }
 
 div.middle,

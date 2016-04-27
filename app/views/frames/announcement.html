@@ -1,8 +1,5 @@
 <div class="announcement" auto-scroll="{ orientation : 'y' }" auto-scroll-on="!!announcementCtrl.frame" auto-scroll-complete="announcementCtrl.completed()">
     <div class="container">
-
-        <h1 class="text-center">{{announcementCtrl.frame.content.title|| 'Announcement' }}</h1>
-
-        <p class="announcement-content" ng-bind-html="announcementCtrl.frame.content.html | sanitizeHtml "></p>
+        <p class="announcement-content" ng-bind-html="announcementCtrl.frame.content.html | sanitizeHtml | safeHtml"></p>
     </div>
 </div>
