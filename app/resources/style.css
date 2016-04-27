@@ -4,21 +4,21 @@ body, html {
 
 /* HEADER */
 
-header.header {
+.header {
     position: fixed;
-    top: 1px;
+    top: 0px;
     left: 0px;
     right: 0px;
+    height: 80px !important;
     margin-bottom: 0px;
     z-index: 1000;
     font-size: 150%;
     border-radius:0px;
-    height: 55px;
-
-}
-
-header.header .navbar-brand {
-    font-size: 150%;
+    height: 65px;
+    font-size: 200%;
+    overflow-y: hidden;
+    color:white;
+    border-bottom: solid 1px #707070;
 }
 
 /* CONTENT */
@@ -26,7 +26,7 @@ header.header .navbar-brand {
 ng-view  {
     display: block;
     position: absolute;
-    top: 55px;
+    top: 80px;
     bottom: 0px;
     left: 0px;
     right: 0px;
