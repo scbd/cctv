@@ -12,9 +12,9 @@
                         <tr>
                             <td class="schedule-item-time" style="width:100px">
                                 <div class="text-warning">{{::r.start | date:'HH:mm'}}</div>
-                                <div class="small text-muted" ng-switch="'TODO'">
-                                    <span ng-switch-when="open">Open</span>
-                                    <span ng-switch-when="close">Close</span>
+                                <div class="small text-muted">
+                                    <span ng-hide="scheduleCtrl.types[r.type].closed">Open</span>
+                                    <span ng-show="scheduleCtrl.types[r.type].closed">Closed</span>
                                 </div>
                             </td>
                             <td>
