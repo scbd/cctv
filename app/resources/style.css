@@ -97,23 +97,27 @@ ng-view.ng-leave { animation: fadeOut 2s; }
     color:white;
 }
 
-div.middle {
+.middle {
     width:100%;
     height:100%;
     overflow-y: auto;
 }
 
-div.middle > table {
+.middle::-webkit-scrollbar {
+    width: 0 !important;
+}
+
+.middle > table {
     width:100%;
     height:100%;
     background-color: inherit;
 }
 
-div.middle > table > tbody > tr > td {
+.middle > table > tbody > tr > td {
     text-align:center;
     vertical-align:middle;
 }
-div.middle > table > tbody > tr > td > p {
+.middle > table > tbody > tr > td > p {
     font-size: 150%;
 }
 
