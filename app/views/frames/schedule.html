@@ -11,7 +11,11 @@
                     <table class="table">
                         <tr>
                             <td class="schedule-item-time" style="width:100px">
-                                {{::r.start | date:'HH:mm'}}
+                                <div class="text-warning">{{::r.start | date:'HH:mm'}}</div>
+                                <div class="small text-muted" ng-switch="'open'">
+                                    <span ng-switch-when="open">Open</span>
+                                    <span ng-switch-when="close">Close</span>
+                                </div>
                             </td>
                             <td>
                                 <div class="schedule-item-type pull-right small">
@@ -21,7 +25,7 @@
 
                                 <div class="schedule-item-location">
                                     <b class="room">{{::scheduleCtrl.rooms[r.location.room].title}}</b>
-                                    <em class="small">{{::scheduleCtrl.rooms[r.location.room].location}}</em>
+                                    <em class="small text-muted">{{::scheduleCtrl.rooms[r.location.room].location}}</em>
                                 </div>
 
                                 <div class="schedule-item-title" style="max-height:4.2em;overflow-y:hidden;text-overflow: ellipsis">
@@ -33,7 +37,7 @@
 
                     </table>
 
-                    <div class="schedule-item-message">{{r.message.text}}</div>
+                    <div class="schedule-item-message lead">{{r.message.text}}</div>
 
                 </td>
             </tr>
