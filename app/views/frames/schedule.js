@@ -69,6 +69,7 @@ define(['moment-timezone', 'lodash', 'app', 'directives/auto-scroll', 'services/
 
                 var query = {
                     "location.venue" : venueId,
+                    "meta.status": { $ne : 'deleted' },
                     "type" : { $in : reservationTypes },
                     "$and" : [
                         { "end"  : { $gte : { $date : now      } } },
