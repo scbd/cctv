@@ -1,4 +1,4 @@
-define(['app', 'directives/no-cursor', 'directives/auto-scroll', 'services/caches', 'services/cctv-stream'], function(app) { 'use strict';
+define(['app', 'filters/moment', 'directives/no-cursor', 'directives/auto-scroll', 'services/caches', 'services/cctv-stream'], function(app) { 'use strict';
 
     app.controller('TemplateController', ['$rootScope', '$http', '$timeout', '$interval', '$q', '$location', '$injector', 'cctvCache', 'cctvStream',
                                   function($rootScope,   $http,   $timeout,   $interval,   $q,   $location,   $injector,   cctvCache,   cctvStream) {
@@ -13,9 +13,6 @@ define(['app', 'directives/no-cursor', 'directives/auto-scroll', 'services/cache
 
         _ctrl.completed  = completed;
 
-        updateTime();
-        $interval(updateTime, 1000*15);
-
 
         cctvStream.on('announcement', nextFrame);
         cctvStream.on('schedule',     nextFrame);
@@ -23,7 +20,13 @@ define(['app', 'directives/no-cursor', 'directives/auto-scroll', 'services/cache
         cctvStream.on('help',         helpFrame);
 
         cctvStream.initialize().then(function(){
+
             _ctrl.event = cctvStream.event;
+
+        }).finally(function(){
+
+            updateTime();
+            $interval(updateTime, 1000*15);
         });
 
         //==============================

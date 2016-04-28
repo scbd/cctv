@@ -59,8 +59,8 @@ define(['moment-timezone', 'lodash', 'app', 'directives/auto-scroll', 'services/
 
                 // vvvvvvv TMP: values in DB are in UTC Format as local. we have to offset the UTC value to venue localtime
 
-                var now      = moment.tz(cctvStream.now(),      cctvStream.event.timezone);
-                var tomorrow = moment.tz(cctvStream.tomorrow(), cctvStream.event.timezone);
+                var now      = moment(cctvStream.now());
+                var tomorrow = moment(cctvStream.tomorrow());
 
                 now      = moment.tz(now     .format('YYYY-MM-DDTHH:mm:ss'), 'UTC').toDate(); // TMP: offset the specified datetime UTC value to localtime
                 tomorrow = moment.tz(tomorrow.format('YYYY-MM-DDTHH:mm:ss'), 'UTC').toDate(); // TMP: offset the specified datetime UTC value to localtime
@@ -92,8 +92,8 @@ define(['moment-timezone', 'lodash', 'app', 'directives/auto-scroll', 'services/
                     var reservations = res.data;
 
                     reservations.forEach(function(r){
-                        r.start = moment.tz(r.start.replace(/Z$/, ''), cctvStream.event.timezone).toDate(); // TMP:  Drop the 'Z' UTC timezone and assume local venue time
-                        r.end   = moment.tz(r.end  .replace(/Z$/, ''), cctvStream.event.timezone).toDate(); // TMP:  Drop the 'Z' UTC timezone and assume local venue time
+                        r.start = moment(r.start.replace(/Z$/, '')).toDate(); // TMP:  Drop the 'Z' UTC timezone and assume local venue time
+                        r.end   = moment(r.end  .replace(/Z$/, '')).toDate(); // TMP:  Drop the 'Z' UTC timezone and assume local venue time
                     });
 
                     return reservations;
@@ -120,7 +120,7 @@ define(['moment-timezone', 'lodash', 'app', 'directives/auto-scroll', 'services/
 
             var typePriority = ((_ctrl.types[ r.type              ]||{}).priority || 1000000).toString().substr(1);
             var roomPriority =  (_ctrl.rooms[(r.location||{}).room]||{}).title+' ';//     || 1000000;
-            var timePriority = moment.tz(r.start, cctvStream.event.timezone).format("HH:mm");
+            var timePriority = moment(r.start).format("HH:mm");
 
             return (timePriority + '-' + typePriority + '-' + roomPriority + '-' + (r.title||'')).toLowerCase();
         }

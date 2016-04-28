@@ -23,9 +23,9 @@
             <div class="pull-left">
                 <img src="app/resources/images/cbd-leaf-white.svg" style="height:50px;margin-right:10px">
             </div>
-            <div class="pull-right text-right" style="margin-top:-20px">
-                <span class="text-nowrap text-muted" style="font-size:50%;line-height:50%">{{templateCtrl.now | date:'EEEE, d MMMM'}}</span><br>
-                <span class="text-nowrap text-primary">{{templateCtrl.now | date:'H:mm'}}</span>
+            <div class="header-datetime" ng-show="templateCtrl.now">
+                <span class="date text-nowrap text-muted hidden-xs">{{templateCtrl.now | moment:'format':'dddd, D MMMM'}}</span>
+                <span class="time text-nowrap text-primary">{{templateCtrl.now | moment:'format':'H:mm'}}</span>
             </div>
             <div class="header-title" style="margin-top:8px">{{templateCtrl.event.Title.en}}</div>
 

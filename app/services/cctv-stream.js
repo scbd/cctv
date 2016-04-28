@@ -25,6 +25,8 @@ define(['app', 'lodash', 'moment-timezone', 'ngCookies', 'services/caches'], fun
 
                         _cctvStream.event = res.data.eventGroup;
 
+                        moment.tz.setDefault(res.data.eventGroup.timezone);
+
                         return _cctvStream.refreshStreamData();
 
                     }).then(function() {
@@ -45,7 +47,7 @@ define(['app', 'lodash', 'moment-timezone', 'ngCookies', 'services/caches'], fun
             //
             //========================================
             CctvStream.prototype.tomorrow = function() {
-                return moment.tz(this.now(), this.overrides.timezone || this.event.timezone).add(1, 'days').startOf('day').toDate();
+                return moment(this.now()).add(1, 'days').startOf('day').toDate();
             };
 
             //========================================

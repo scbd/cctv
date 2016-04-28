@@ -21,6 +21,20 @@ body, html {
     border-bottom: solid 1px #707070;
 }
 
+.header .header-datetime {
+    float:right;
+    text-align:right;
+    margin-top:0px;
+}
+
+.header .header-datetime .date {
+}
+
+.header .header-datetime .time {
+    font-size:36px;
+    font-weight: bold;
+}
+
 /* CONTENT */
 
 ng-view  {
