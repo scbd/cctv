@@ -37,7 +37,7 @@
 
                     </table>
 
-                    <div class="schedule-item-message">{{r.message.text}}</div>
+                    <div ng-if="::r.message.text" class="schedule-item-message">{{r.message.text}}</div>
 
                 </td>
             </tr>

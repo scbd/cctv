@@ -89,6 +89,7 @@ ng-view.ng-leave { animation: fadeOut 2s; }
     text-align: center;
     font-size: 80%;
     font-weight: bold;
+    margin-top: 7px;
 }
 
 .schedule .schedule-item .schedule-item-type {
