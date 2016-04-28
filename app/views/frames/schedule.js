@@ -7,7 +7,7 @@ define(['moment-timezone', 'lodash', 'app', 'directives/auto-scroll', 'services/
         var _ctrl = this;
 
         _ctrl.completed = completed;
-    
+
         load();
 
         return this;
@@ -101,13 +101,28 @@ define(['moment-timezone', 'lodash', 'app', 'directives/auto-scroll', 'services/
 
             }).then(function(reservations) {
 
-                _ctrl.reservations = reservations;
+                _ctrl.reservations = _.sortBy(reservations, sortKey);
 
             }).catch(function(err) {
 
                 console.error(err.data || err);
                 completed();
             });
+        }
+
+        //========================================
+        //
+        //========================================
+        function sortKey(r) {
+
+            if(!r)
+                return "zzz";
+
+            var typePriority = ((_ctrl.types[ r.type              ]||{}).priority || 1000000).toString().substr(1);
+            var roomPriority =  (_ctrl.rooms[(r.location||{}).room]||{}).title+' ';//     || 1000000;
+            var timePriority = moment.tz(r.start, cctvStream.event.timezone).format("HH:mm");
+
+            return (timePriority + '-' + typePriority + '-' + roomPriority + '-' + (r.title||'')).toLowerCase();
         }
 
         //========================================
