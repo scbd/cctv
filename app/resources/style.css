@@ -90,6 +90,16 @@ ng-view.ng-leave { animation: fadeOut 2s; }
     font-size: 80%;
     font-weight: bold;
 }
+
+.schedule .schedule-item .schedule-item-type {
+    margin-top: 0px;
+    margin-right: 5px;
+}
+
+.schedule .schedule-item .schedule-item-type > .side-event-id {
+    margin-right: 4px;
+}
+
 .schedule .schedule-item.success .schedule-item-message,
 .schedule .schedule-item.info    .schedule-item-message,
 .schedule .schedule-item.warning .schedule-item-message,
