@@ -60,7 +60,6 @@ ng-view.ng-leave { animation: fadeOut 2s; }
 }
 
 .schedule .schedule-item  > td {
-    padding-bottom: 3px;
 }
 
 .schedule .schedule-item  > td > table {
