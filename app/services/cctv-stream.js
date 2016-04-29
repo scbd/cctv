@@ -46,13 +46,6 @@ define(['app', 'lodash', 'moment-timezone', 'ngCookies', 'services/caches'], fun
             //========================================
             //
             //========================================
-            CctvStream.prototype.tomorrow = function() {
-                return moment(this.now()).add(1, 'days').startOf('day').toDate();
-            };
-
-            //========================================
-            //
-            //========================================
             CctvStream.prototype.on = function(type, callback) {
                 this.listeners[type] = this.listeners[type] || [];
                 this.listeners[type].push(callback);

@@ -10,8 +10,8 @@ define(['app', 'providers/extended-route', 'ngRoute'], function(app, _) { 'use s
             when('/help/not-configured',    { templateUrl : 'views/help/not-configured.html',    resolveController : false } ).
             when('/help/event-information', { templateUrl : 'views/help/event-information.html', resolveController : true  } ).
 
-            when('/announcement/:id',       { templateUrl : 'views/frames/announcement.html',    resolveController : true  } ).
-            when('/schedule/:id',           { templateUrl : 'views/frames/schedule.html',        resolveController : true  } ).
+            when('/announcement/:id?',      { templateUrl : 'views/frames/announcement.html',    resolveController : true  } ).
+            when('/schedule/:id?',          { templateUrl : 'views/frames/schedule.html',        resolveController : true  } ).
             when('/authentication',         { templateUrl : 'views/authentication.html',         resolveController : true  } );
     }]);
 });

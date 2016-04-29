@@ -1,29 +1,28 @@
 define(['app', 'directives/auto-scroll', 'services/caches', 'services/cctv-stream', 'filters/html-sanitizer'], function() { "use strict";
 
-	return ['$scope', '$http', '$route', '$timeout', 'cctvCache', 'cctvStream', function($scope, $http, $route, $timeout, cctvCache, cctvStream) {
+	return ['$rootScope', '$http', '$route', '$timeout', 'cctvCache', 'cctvStream', function($rootScope, $http, $route, $timeout, cctvCache, cctvStream) {
 
         var _ctrl = this;
 
         _ctrl.completed = completed;
 
-        load();
+        init();
 
         return this;
 
         //========================================
         //
         //========================================
-        function load() {
+        function init() {
 
-            $http.get('/api/v2016/cctv-frames/'+$route.current.params.id, { cache : cctvCache }).then(function(res) {
+            var frame = $rootScope.frame;
 
-                _ctrl.frame = res.data;
-
-            }).catch(function(err){
-
-                console.error(err.data || err);
+            if(!frame) {
                 completed();
-            });
+                return;
+            }
+
+            _ctrl.frame = frame;
         }
 
         //========================================

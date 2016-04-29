@@ -13,7 +13,6 @@ define(['app', 'filters/moment', 'directives/no-cursor', 'directives/auto-scroll
 
         _ctrl.completed  = completed;
 
-
         cctvStream.on('announcement', nextFrame);
         cctvStream.on('schedule',     nextFrame);
         cctvStream.on('news',         nextNews);
@@ -48,7 +47,8 @@ define(['app', 'filters/moment', 'directives/no-cursor', 'directives/auto-scroll
         //==============================
         function nextFrame(frame) {
 
-            _ctrl.frame = frame;
+            _ctrl     .frame = frame;
+            $rootScope.frame = frame;
 
             var lastRoute = $location.path();
 
