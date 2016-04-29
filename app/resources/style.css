@@ -108,6 +108,12 @@ ng-view.ng-leave { animation: fadeOut 2s; }
     color: #272b30;
 }
 
+.schedule .schedule-item .schedule-item-title {
+/*    max-height:4.2em;
+    overflow-y:hidden;
+    text-overflow: ellipsis; */ /* DISABLE FOR PLENARY */
+}
+
 .schedule .schedule-item.ng-enter {
     animation: fadeInDown 1s;
 }
