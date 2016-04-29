@@ -9,6 +9,9 @@ define(['app'], function(app) { 'use strict';
                 var timers  = [];
                 var timeout = parseInt(attr.noCursor||3000);
 
+                var lastX;
+                var lastY;
+
                 hideCursor();
 
                 //==================================================
@@ -21,9 +24,23 @@ define(['app'], function(app) { 'use strict';
                 //==================================================
                 //
                 //==================================================
-                element.mousemove(function() {
-                    showCursor();
-                    timers.push($timeout(hideCursor, timeout));
+                element.mousemove(function(evt) {
+
+                    if(lastX===undefined) lastX = evt.pageX;
+                    if(lastY===undefined) lastY = evt.pageY;
+
+                    var delta = Math.abs(evt.pageX - lastX)+
+                                Math.abs(evt.pageY - lastY);
+
+                    lastX = evt.pageX;
+                    lastY = evt.pageY;
+
+                    console.log(delta);
+
+                    if(delta>10){
+                        showCursor();
+                        timers.push($timeout(hideCursor, timeout));
+                    }
                 });
 
                 //==================================================
