@@ -120,7 +120,16 @@ ng-view.ng-leave { animation: fadeOut 2s; }
 
 .announcement {
     padding-top: 0px;
+    font-size: 17px;
 }
+
+.announcement h1 { font-size: 38px; font-weight: normal; }
+.announcement h2 { font-size: 34px; font-weight: normal; }
+.announcement h3 { font-size: 29px; font-weight: normal; }
+.announcement h4 { font-size: 26px; font-weight: normal; }
+.announcement h5 { font-size: 21px; font-weight: normal; }
+.announcement h6 { font-size: 19px; font-weight: normal; }
+.announcement a  { text-decoration: inherit !important; }
 
 .announcement .announcement-content {
     font-size: 150%;

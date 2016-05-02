@@ -34,6 +34,7 @@ define(['app', 'jquery', 'lodash'], function(app, $, _) { 'use strict';
         h4       : { class : blockTextClasses, style : blockTextStyles, align : ['left', 'right', 'center', 'justify'] },
         h5       : { class : blockTextClasses, style : blockTextStyles, align : ['left', 'right', 'center', 'justify'] },
         br       : { },
+        a        : { class : inlineTextClasses, href : [] },// style : [] },
         span     : { class : inlineTextClasses },// style : [] },
         b        : { class : inlineTextClasses }, //bold
         strong   : { class : inlineTextClasses }, //bold
@@ -100,7 +101,9 @@ define(['app', 'jquery', 'lodash'], function(app, $, _) { 'use strict';
                         });
                     }
                     else {
-                        attr.value = _.intersection((attr.value||'').split(' '), attrInfo);
+                        if(attrInfo.length) {
+                            attr.value = _.intersection((attr.value||'').split(' '), attrInfo);
+                        }
                     }
                 });
             });
