@@ -4,10 +4,10 @@ define(['app', 'filters/moment', 'directives/no-cursor', 'directives/auto-scroll
                                   function($rootScope,   $http,   $timeout,   $interval,   $q,   $location,   $injector,   cctvCache,   cctvStream) {
 
         if($location.path()!='/')
-            $location.path('/');
+            $location.path('/').replace();
 
         if(!cctvStream.streamId)
-            $location.path('/help/not-configured');
+            $location.path('/help/not-configured').replace();
 
         var _ctrl = this;
 
@@ -52,7 +52,7 @@ define(['app', 'filters/moment', 'directives/no-cursor', 'directives/auto-scroll
 
             var lastRoute = $location.path();
 
-            $location.path('/'+frame.content.type+'/'+frame._id);
+            $location.path('/'+frame.content.type+'/'+frame._id).replace();
 
             if(lastRoute==$location.path()){
                 $injector.invoke(["$route", function($route) {
@@ -73,7 +73,7 @@ define(['app', 'filters/moment', 'directives/no-cursor', 'directives/auto-scroll
         //
         //==============================
         function helpFrame() {
-            $location.path('/help/event-information');
+            $location.path('/help/event-information').replace();
         }
     }]);
 });
