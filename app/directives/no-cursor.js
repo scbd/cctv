@@ -35,8 +35,6 @@ define(['app'], function(app) { 'use strict';
                     lastX = evt.pageX;
                     lastY = evt.pageY;
 
-                    console.log(delta);
-
                     if(delta>10){
                         showCursor();
                         timers.push($timeout(hideCursor, timeout));
