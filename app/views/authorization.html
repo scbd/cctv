@@ -1,0 +1,118 @@
+<div class="container">
+
+    <div class="pull-right" style="margin-top:10px">
+        <button class="btn btn-default btn-lg" ng-click="authorizationCtrl.close()">&times;</button>
+    </div>
+
+    <h2>Authorization</h2>
+
+    <div ng-if="authorizationCtrl.error" class='alert alert-danger'>
+        {{authorizationCtrl.error}}
+    </div>
+
+    <form ng-submit="authorizationCtrl.save()">
+
+        <div class="panel panel-default" ng-class="{ 'panel-success' : authorizationCtrl.authorized, 'panel-warning' : !authorizationCtrl.authorized }">
+
+            <div class="panel-heading">
+                Monitor Identity
+            </div>
+            <div class="panel-body">
+
+                <div class="row">
+
+                    <div class="col-xs-12">
+
+                        <div class="form-group">
+                            <label for="monitorId">Unique Id</label>
+                            <input type="text" class="form-control" required ng-model="authorizationCtrl.monitor.id" readonly placeholder="Monitor Unique Id">
+                        </div>
+
+                    </div>
+                    <div class="col-xs-12">
+
+                        <div class="form-group">
+                            <label for="location">Location of this monitor</label>
+                            <input type="text" class="form-control" required ng-model="authorizationCtrl.monitor.location" placeholder="Location">
+                        </div>
+
+                    </div>
+                    <div class="col-xs-12">
+
+                        <div class="form-group">
+                            <label for="monitorId">Event</label>
+                            <select required class="form-control" ng-model="authorizationCtrl.eventGroupId" ng-options="o._id as o.Title.en for o in authorizationCtrl.eventGroups" >
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-12">
+
+                        <div class="form-group">
+                            <label for="monitorId">Stream Id</label>
+                            <div class="input-group">
+                              <input type="text" class="form-control" ng-model="authorizationCtrl.streamId" placeholder="StreamId (optional)">
+                              <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-click="authorizationCtrl.saveStreamId()">Update</button>
+                              </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+
+            <div class="panel-heading">
+                Update credentials
+            </div>
+            <div class="panel-body">
+
+                <div class="alert alert-info">
+                    The credentials are used to update monitor identity <u>only</u>.
+                    It is not used to authentication the cctv app.
+                </div>
+
+                <div class="row">
+
+                    <div class="col-xs-6">
+
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input type="email" class="form-control" ng-model="authorizationCtrl.email" placeholder="Email">
+                        </div>
+
+                    </div>
+                    <div class="col-xs-6">
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" ng-model="authorizationCtrl.password" placeholder="Password">
+                        </div>
+                    </div>
+
+                    <div class="col-xs-6">
+
+                        <button type="submit" class="btn btn-primary">Update</button>
+                        <button type="button" class="btn btn-warning" ng-click="authorizationCtrl.deletMonitor()">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div ng-if="authorizationCtrl.error" class='alert alert-danger'>
+        <pre style="color:inherit;background-color:inherit">{{authorizationCtrl.error|json}}</pre>
+    </div>
+
+
+
+</div>

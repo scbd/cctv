@@ -3,13 +3,16 @@ define(['app', 'filters/moment', 'directives/no-cursor', 'directives/auto-scroll
     app.controller('TemplateController', ['$rootScope', '$http', '$timeout', '$interval', '$q', '$location', '$injector', 'cctvCache', 'cctvStream',
                                   function($rootScope,   $http,   $timeout,   $interval,   $q,   $location,   $injector,   cctvCache,   cctvStream) {
 
+        var _ctrl = this;
+
+        if($location.path()=='/authorization')
+            return this;
+
         if($location.path()!='/')
             $location.path('/').replace();
 
         if(!cctvStream.streamId)
             $location.path('/help/not-configured').replace();
-
-        var _ctrl = this;
 
         _ctrl.completed  = completed;
 
