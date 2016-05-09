@@ -25,6 +25,10 @@ define(['app', 'filters/moment', 'directives/no-cursor', 'directives/auto-scroll
 
             _ctrl.event = cctvStream.event;
 
+        }).catch(function(err){
+
+            console.error(err.data || err);
+
         }).finally(function(){
 
             updateTime();

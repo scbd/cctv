@@ -21,6 +21,9 @@ define(['app', 'lodash', 'moment-timezone', 'ngCookies', 'services/caches'], fun
                     if(_cctvStream.event)
                         return $q.resolve();
 
+                    if(!_cctvStream.streamId)
+                        return $q.reject("CCTV is not configured.");
+
                     return $http.get('/api/v2016/cctv-streams/'+_cctvStream.streamId, { cache: cctvCache }).then(function(res) {
 
                         _cctvStream.event = res.data.eventGroup;
@@ -263,7 +266,7 @@ define(['app', 'lodash', 'moment-timezone', 'ngCookies', 'services/caches'], fun
 
 
             return new CctvStream({
-                streamId  : $location.search().streamId || $cookies.get('streamId') || '6632294138146144',
+                streamId  : $location.search().streamId || $cookies.get('streamId'),
                 overrides : {
                     now : $location.search().datetime
                 }
