@@ -27,7 +27,7 @@ define(['moment-timezone', 'lodash', 'app', 'directives/auto-scroll', 'services/
                 var venueId = cctvStream.event.venueId;
 
                 return $q.all([
-                    $http.get('/api/v2016/reservation-types', { cache : cctvCache }),
+                    $http.get('/api/v2016/types',             { cache : cctvCache, params: { q: { schema: 'resevations' } } }),
                     $http.get('/api/v2016/venue-rooms',       { cache : cctvCache, params: { q: { venue : venueId } } })
                 ]);
 
