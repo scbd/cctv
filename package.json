@@ -2,15 +2,18 @@
   "name": "cctv",
   "description": "cctv of the Convention on Biological Diversity",
   "dependencies": {
-    "bower": "1.7.7",
-    "ejs": "2.4.1",
-    "express": "4.13.4",
-    "http-proxy": "1.13.2",
+    "bower": "1.8.0",
+    "ejs": "2.5.2",
+    "express": "4.14.0",
+    "http-proxy": "1.15.2",
     "morgan": "1.7.0"
   },
   "license": "MIT",
   "private": true,
-  "repository": "scbd/cctv",
+  "repository": {
+      "type" : "git",
+      "url" : "https://github.com/scbd/cctv.git"
+  },
   "scripts": {
     "postinstall": "./node_modules/.bin/bower install --allow-root -q"
   }
