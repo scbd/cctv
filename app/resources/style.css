@@ -191,6 +191,6 @@ ng-view.ng-leave { animation: fadeOut 2s; }
 }
 
 .label.agenda      { background: #555; display: inline-block; min-width: 85px; font-size:70%;   }
-.label.agenda.CBD  { background: #77b300; }
-.label.agenda.CP   { background: #ff8800; }
-.label.agenda.NP   { background: #1049A9; }
+.label.agenda.CBD  { background: #009B48; }
+.label.agenda.CP   { background: #A05800; }
+.label.agenda.NP   { background: #0086B7; }
