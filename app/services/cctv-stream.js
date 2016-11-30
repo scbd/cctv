@@ -2,7 +2,7 @@ define(['app', 'lodash', 'moment-timezone', 'ngCookies', 'services/caches'], fun
 
     app.provider('cctvStream', [function() {
 
-        this.$get = ['$location', '$cookies', '$http', '$q', '$timeout', 'cctvCache', function($location, $cookies, $http, $q, $timeout, cctvCache){
+        this.$get = ['$location', '$cookies', '$http', '$q', '$timeout', '$window', 'cctvCache', function($location, $cookies, $http, $q, $timeout, $window, cctvCache){
 
             //========================================
             //
@@ -35,6 +35,8 @@ define(['app', 'lodash', 'moment-timezone', 'ngCookies', 'services/caches'], fun
                     }).then(function() {
                         $timeout(function() { _cctvStream.nextFrame(); }, 250);
                         $timeout(function() { _cctvStream.nextNews();  }, 250);
+                    }).finally(function(){
+                        $timeout(function() { _cctvStream.fullReload = true; }, 60*60*1000); // for full refresh every hour on next cycle
                     });
                 };
             }
@@ -235,6 +237,11 @@ define(['app', 'lodash', 'moment-timezone', 'ngCookies', 'services/caches'], fun
 
                 var _cctvStream = this;
                 var options  = { params : { } };
+
+                if(_cctvStream.fullReload) {
+                    console.log("Reload");
+                    $window.location.reload(true);
+                }
 
                 if(_cctvStream.overrides.now)
                     options.params.datetime = _cctvStream.now();
