@@ -24,12 +24,14 @@
                 <img src="app/resources/images/cbd-leaf-white.svg" style="height:50px;margin-right:10px">
             </div>
             <div class="header-datetime" ng-show="templateCtrl.now">
-                <span class="date text-nowrap text-muted hidden-xs">{{templateCtrl.now | moment:'format':'dddd, D MMMM'}}</span>
+                <span class="date text-nowrap text-muted">
+                    <span class="hidden-xs hidden-sm hidden-md">{{templateCtrl.now | moment:'format':'dddd, D MMMM'}}</span>
+                    <span class="visible-md-inline">{{templateCtrl.now | moment:'format':'dddd, D MMM'}}</span>
+                    <span class="visible-sm-inline">{{templateCtrl.now | moment:'format':'ddd Do'}}</span>
+                </span>
                 <span class="time text-nowrap text-primary">{{templateCtrl.now | moment:'format':'H:mm'}}</span>
             </div>
-            <div class="header-title" style="margin-top:8px">{{templateCtrl.event.Title.en}}</div>
-
-
+            <div class="header-title" style="margin-top:8px">{{templateCtrl.event.schedule.title || templateCtrl.event.Title.en}}</div>
         </div>
     </header>
 
