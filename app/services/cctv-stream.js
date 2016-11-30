@@ -126,12 +126,14 @@ define(['app', 'lodash', 'moment-timezone', 'ngCookies', 'services/caches'], fun
                     });
                 }
 
+                var nextTimeout = 5000;
+
                 return $q.when(frames).then(function(frames) {
 
-                    var frame = frames.shift();
+                    if( frames.length<=1) _cctvStream.refreshStreamData();
+                    if(!frames.length)    nextTimeout = 60000;
 
-                    if(frames.length<=1)
-                        _cctvStream.refreshStreamData();
+                    var frame = frames.shift();
 
                     if(frame) _cctvStream.dispatch(frame);
                     else      _cctvStream.dispatch(null, 'help');
@@ -140,7 +142,7 @@ define(['app', 'lodash', 'moment-timezone', 'ngCookies', 'services/caches'], fun
 
                 }).then(function(frame) {
 
-                    _cctvStream.setFrameTimer(frame ? 60000 : 5000); // backup refresh
+                    _cctvStream.setFrameTimer(frame ? 60000 : nextTimeout); // backup refresh
 
                     return frame;
 
@@ -152,7 +154,7 @@ define(['app', 'lodash', 'moment-timezone', 'ngCookies', 'services/caches'], fun
 
                     _cctvStream.refreshStreamData();
 
-                    _cctvStream.setFrameTimer(5000);
+                    _cctvStream.setFrameTimer(30000);
                 });
             };
 
@@ -209,7 +211,7 @@ define(['app', 'lodash', 'moment-timezone', 'ngCookies', 'services/caches'], fun
 
                     _cctvStream.refreshStreamData();
 
-                    _cctvStream.setNewsTimer(5000);
+                    _cctvStream.setNewsTimer(30000);
                 });
             };
 
