@@ -33,6 +33,10 @@ define(['moment-timezone', 'lodash', 'app', 'directives/auto-scroll', 'services/
 
             }).then(function(res) {
 
+                res[0].data = _.map(res[0].data, function(t) {
+                    return _.defaults(t, {priority: 999999});
+                });
+
                 _ctrl.types = _.reduce(res[0].data, function(ret, r){ ret[r._id] = r; return ret; }, {});
                 _ctrl.rooms = _.reduce(res[1].data, function(ret, r){ ret[r._id] = r; return ret; }, {});
                 _ctrl.frame = frame;
@@ -52,7 +56,7 @@ define(['moment-timezone', 'lodash', 'app', 'directives/auto-scroll', 'services/
             if(!r)
                 return "zzz";
 
-            var typePriority = ((_ctrl.types[ r.type              ]||{}).priority || 1000000).toString().substr(1);
+            var typePriority = ((_ctrl.types[ r.type              ]||{priority: 999999}).priority+1000000).toString().slice(-6);
             var roomPriority =  (_ctrl.rooms[(r.location||{}).room]||{}).title+' ';//     || 1000000;
             var timePriority = moment(r.start).format("HH:mm");
 
