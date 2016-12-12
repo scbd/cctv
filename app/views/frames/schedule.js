@@ -40,7 +40,12 @@ define(['moment-timezone', 'lodash', 'app', 'directives/auto-scroll', 'services/
                 _ctrl.types = _.reduce(res[0].data, function(ret, r){ ret[r._id] = r; return ret; }, {});
                 _ctrl.rooms = _.reduce(res[1].data, function(ret, r){ ret[r._id] = r; return ret; }, {});
                 _ctrl.frame = frame;
-                _ctrl.reservations = _.sortBy(frame.reservations, sortKey);
+
+                _ctrl.reservations = _(frame.reservations).map(function(r){
+                    return _.defaults(r, {
+                        open : !(_ctrl.types[r.type]||{}).closed
+                    });
+                }).sortBy(sortKey).value();
 
             }).catch(function(err) {
                 console.error(err.data || err);

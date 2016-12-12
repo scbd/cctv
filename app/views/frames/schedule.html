@@ -13,8 +13,8 @@
                             <td class="schedule-item-time text-right" style="width:100px">
                                 <div class="text-warning">{{::r.start | moment:'format':'H:mm'}}</div>
                                 <div class="small text-muted">
-                                    <span ng-hide="scheduleCtrl.types[r.type].closed">Open</span>
-                                    <span ng-show="scheduleCtrl.types[r.type].closed">Closed</span>
+                                    <span ng-show="r.open">Open</span>
+                                    <span ng-hide="r.open">Closed</span>
                                 </div>
                             </td>
                             <td>
