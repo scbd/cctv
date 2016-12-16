@@ -1,9 +1,9 @@
 <div class="middle announcement">
-    <table auto-scroll="{ orientation : 'y' }" auto-scroll-on="!!announcementCtrl.frame" auto-scroll-complete="announcementCtrl.completed()">
+    <table auto-scroll="{ orientation : 'y', speed:50, open:5000, close:5000 }" auto-scroll-on="!!announcementCtrl.frame" auto-scroll-complete="announcementCtrl.completed()">
         <tr>
             <td>
-                <div class="container">
-                    <p class="announcement-content" ng-bind-html="announcementCtrl.frame.content.html | sanitizeHtml | safeHtml"></p>
+                <div ng-repeat="frame in announcementCtrl.frameList" class="container">
+                    <p class="announcement-content" ng-bind-html="frame.content.html | sanitizeHtml | safeHtml"></p>
                 </div>
             </td>
         </tr>

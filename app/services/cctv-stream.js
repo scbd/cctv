@@ -124,6 +124,24 @@ define(['app', 'lodash', 'moment-timezone', 'ngCookies', 'services/caches'], fun
 
                         _cctvStream.frameList = _.filter(data.frames, function(f) { return f.content.type!='news'; });
 
+                        //  vvv combine announcement into a sigle virtual frame vvv
+
+                        var announcements = _.filter(_cctvStream.frameList, function(f) { return f.content.type=='announcement'; });
+
+                        if(announcements.length) {
+
+                            _cctvStream.frameList = _.difference(_cctvStream.frameList, announcements);
+                            _cctvStream.frameList.push({
+                                _id : "v"+new Date().getTime(),
+                                content : {
+                                    type : 'announcement',
+                                    frameList : announcements
+                                }
+                            });
+                        }
+
+                        //  ^^^ combine announcement into a sigle virtual frame ^^^
+
                         return _cctvStream.frameList;
                     });
                 }

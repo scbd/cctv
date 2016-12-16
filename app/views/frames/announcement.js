@@ -1,6 +1,6 @@
-define(['app', 'directives/auto-scroll', 'services/caches', 'services/cctv-stream', 'filters/html-sanitizer'], function() { "use strict";
+define(['lodash', 'jquery', 'app', 'directives/auto-scroll', 'services/caches', 'services/cctv-stream', 'filters/html-sanitizer'], function(_, $) { "use strict";
 
-	return ['$rootScope', '$http', '$route', '$timeout', 'cctvCache', 'cctvStream', function($rootScope, $http, $route, $timeout, cctvCache, cctvStream) {
+	return ['$rootScope', '$http', '$route', '$timeout', 'cctvCache', 'cctvStream', '$filter', function($rootScope, $http, $route, $timeout, cctvCache, cctvStream, $filter) {
 
         var _ctrl = this;
 
@@ -23,6 +23,11 @@ define(['app', 'directives/auto-scroll', 'services/caches', 'services/cctv-strea
             }
 
             _ctrl.frame = frame;
+            _ctrl.frameList = frame.content.frameList || [frame];
+
+            _.forEach(_ctrl.frameList, function(f){
+                f.content.html = trimHtml(f.content.html);
+            });
         }
 
         //========================================
@@ -32,5 +37,22 @@ define(['app', 'directives/auto-scroll', 'services/caches', 'services/cctv-strea
             cctvStream.completed(_ctrl.frame);
         }
 
+        //========================================
+        //
+        //========================================
+        function trimHtml(html) {
+
+            var sanitizeHtml = $filter('sanitizeHtml')(html);
+            var dom = $('<div></div>').html(sanitizeHtml);
+
+            dom.children().each(function(i,e) {
+                e = $(e);
+
+                if(!e.text().replace(/\s*/g, ''))
+                    e.remove();
+            });
+
+            return dom.html();
+        }
 	}];
 });

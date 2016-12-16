@@ -131,10 +131,19 @@ ng-view.ng-leave { animation: fadeOut 2s; }
 .announcement h6 { font-size: 19px; font-weight: normal; }
 .announcement a  { text-decoration: inherit !important; }
 
-.announcement .announcement-content {
-    font-size: 150%;
-    color:white;
+.announcement .container {
+    border-bottom: solid 1px #707070;
+    padding-top: 40px;
+    padding-bottom: 40px;
 }
+.announcement .container:last-child {
+    border-bottom: none;
+}
+
+.announcement .container > announcement-content {
+    margin:0px;
+}
+
 
 .middle {
     width:100%;
