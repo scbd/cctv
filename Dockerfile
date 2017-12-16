@@ -1,4 +1,8 @@
-FROM node:4.2
+FROM node:4.8.7-alpine
+
+RUN apk update  -q && \
+    apk upgrade -q && \
+    apk add     -q --no-cache bash git openssh
 
 WORKDIR /usr/src/app
 
