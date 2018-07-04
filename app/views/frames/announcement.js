@@ -48,7 +48,8 @@ define(['lodash', 'jquery', 'app', 'directives/auto-scroll', 'services/caches', 
             dom.children().each(function(i,e) {
                 e = $(e);
 
-                if(!e.text().replace(/\s*/g, ''))
+                // Remove empty nodes
+                if(!e.text().replace(/\s*/g, '') && !e.find("img, hr").addBack("img, hr").size())
                     e.remove();
             });
 
