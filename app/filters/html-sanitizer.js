@@ -34,6 +34,7 @@ define(['app', 'jquery', 'lodash'], function(app, $, _) { 'use strict';
         h4       : { class : blockTextClasses, style : blockTextStyles, align : ['left', 'right', 'center', 'justify'] },
         h5       : { class : blockTextClasses, style : blockTextStyles, align : ['left', 'right', 'center', 'justify'] },
         br       : { },
+        img      : { src   : [] },
         a        : { class : inlineTextClasses, href : [] },// style : [] },
         span     : { class : inlineTextClasses },// style : [] },
         b        : { class : inlineTextClasses }, //bold
