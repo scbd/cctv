@@ -18,6 +18,7 @@ define(['app', 'filters/moment', 'directives/no-cursor', 'directives/auto-scroll
 
         cctvStream.on('announcement', nextFrame);
         cctvStream.on('schedule',     nextFrame);
+        cctvStream.on('room',         nextFrame);
         cctvStream.on('news',         nextNews);
         cctvStream.on('help',         helpFrame);
 

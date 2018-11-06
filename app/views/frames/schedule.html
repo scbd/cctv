@@ -1,6 +1,9 @@
 <div class="schedule" auto-scroll="{ orientation : 'y', speed:50, open:5000, close:5000 }" auto-scroll-on="!!scheduleCtrl.reservations" auto-scroll-complete="scheduleCtrl.completed()">
     <div class="container">
-        <h1 class="text-center">{{::scheduleCtrl.frame.content.title}}</h1>
+        <h1 class="text-center">
+            {{::scheduleCtrl.frame.content.title}} 
+            <small class="text-muted">{{::scheduleCtrl.frame.content.room.location}}</small>
+        </h1>
     </div>
 
     <div class="container-fluid" ng-init="levels={ warning : 'warning', alert : 'danger' } ">
@@ -23,7 +26,7 @@
                                     <div  ng-if="::r.sideEvent" class="side-event-id hidden-xs text-muted text-right"><em>#{{::r.sideEvent.id}}</em></div>
                                 </div>
 
-                                <div class="schedule-item-location">
+                                <div class="schedule-item-location" ng-if="::scheduleCtrl.frame.content.type!='room'">
                                     <b class="room">{{::scheduleCtrl.rooms[r.location.room].title}}</b>
                                     <em class="small text-muted">{{::scheduleCtrl.rooms[r.location.room].location}}</em>
                                 </div>
