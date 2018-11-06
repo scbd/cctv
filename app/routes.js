@@ -12,6 +12,7 @@ define(['app', 'providers/extended-route', 'ngRoute'], function(app, _) { 'use s
 
             when('/announcement/:id?',      { templateUrl : 'views/frames/announcement.html',    resolveController : true  } ).
             when('/schedule/:id?',          { templateUrl : 'views/frames/schedule.html',        resolveController : true  } ).
+            when('/room/:id?',              { templateUrl : 'views/frames/schedule.html',        resolveController : true  } ).
             when('/authorization' ,         { templateUrl : 'views/authorization.html',          resolveController : true  } );
     }]);
 });
