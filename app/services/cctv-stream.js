@@ -21,10 +21,29 @@ define(['app', 'lodash', 'moment-timezone', 'ngCookies', 'services/caches'], fun
                     if(_cctvStream.event)
                         return $q.resolve();
 
-                    if(!_cctvStream.streamId)
-                        return $q.reject("CCTV is not configured.");
+                    if(!_cctvStream.streamId) { //auto-detect streamId
 
-                    return $http.get('/api/v2016/cctv-streams/'+_cctvStream.streamId, { cache: cctvCache }).then(function(res) {
+                        _cctvStream.streamId = $http.get('/api/v2016/conferences', { cache: cctvCache, params: {
+                            q: { active: true },
+                            f: { "conference.streamId": 1 },
+                            fo: 1
+
+                        } }).then(function(res){
+
+                            var streamId = (res.data.conference||{}).streamId;
+
+                            if(!streamId)
+                                throw "CCTV is not configured.";
+
+                            return _cctvStream.streamId = streamId;
+                        });
+                    }
+
+                    return $q.when(_cctvStream.streamId).then(function(){
+
+                        return $http.get('/api/v2016/cctv-streams/'+encodeURIComponent(_cctvStream.streamId), { cache: cctvCache });
+
+                    }).then(function(res) {
 
                         _cctvStream.event = res.data.eventGroup;
 
