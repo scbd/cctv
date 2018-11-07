@@ -1,4 +1,4 @@
-version: 2
+﻿version: 2
 
 _defaults: &defaults
   docker:
@@ -16,9 +16,9 @@ _run:
     name: Test docker image 
     command:  |
       docker run --name test -d -p 8000:8000 output
-      sleep 10
-      docker exec test curl --retry 10 --retry-delay 5 -v http://localhost:8000/
-      docker exec test curl --header "base_url: /cctv/" localhost:8000/cctv  | grep "base href=\"/cctv/\""
+      sleep 3
+      docker exec test curl --retry 10 --retry-delay 3 -v http://localhost:8000/
+      docker exec test curl --retry 10 --retry-delay 3 --header "base_url: /cctv/" localhost:8000/cctv  | grep "base href=\"/cctv/\""
 
 jobs:
   build:
