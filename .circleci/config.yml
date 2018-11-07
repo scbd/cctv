@@ -1,4 +1,4 @@
-﻿version: 2
+version: 2
 
 _defaults: &defaults
   docker:
@@ -106,19 +106,23 @@ workflows:
                 - /^v?[0-9]+(\.[0-9]+)*$/
                 
       - build-deploy-branches:
+          context: docker-hub
           filters:
             branches:
               only: /^(master|dev|stg)$/
       - build-deploy-staging:
+          context: docker-hub
           filters:
             branches:
               only: /^stg\/.*/
       - build_and_deploy_releases:
+          context: docker-hub
           filters:
             branches:
                 only:
                   - /^release\/.*/  
       - build_and_deploy_tags:
+          context: docker-hub
           filters:
             branches:
                 ignore: /.*/
