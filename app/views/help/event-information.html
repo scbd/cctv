@@ -2,8 +2,8 @@
     <table style="backgroud-color:inherit">
         <tr>
             <td>
-                <h2 style="padding-left:20px;padding-right:20px">{{eventInformationCtrl.title}}</h2>
-                <p ng-repeat="d in eventInformationCtrl.descriptions" style="padding-left:20px;padding-right:20px">{{d}}</p>
+                <h2 style="padding-left:20px;padding-right:20px;margin-bottom:35px">{{eventInformationCtrl.title}}</h2>
+                <p ng-repeat="d in eventInformationCtrl.descriptions track by $index" style="padding-left:20px;padding-right:20px;font-size:200%">{{d}}</p>
             </td>
         </tr>
     </table>
