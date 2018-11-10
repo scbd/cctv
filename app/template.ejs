@@ -2,6 +2,27 @@
 <html lang="en" ng-controller="TemplateController as templateCtrl">
 
 <head>
+    <script>
+        var watchdog_timer;
+
+        function watchdog() {
+
+            //Force refresh if watchdog(); is not called after 5 minutes
+            
+            if(watchdog_timer)
+                clearTimeout(watchdog_timer)
+
+            watchdog_timer = setTimeout(function(){
+                console.log('watchdog');
+                window.location.reload(true);
+            }, 5*60*1000); //5 minutes
+        }
+
+        watchdog();
+
+        window.watchdog = watchdog;
+
+    </script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">

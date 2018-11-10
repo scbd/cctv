@@ -183,6 +183,8 @@ define(['app', 'lodash', 'moment-timezone', 'ngCookies', 'services/caches'], fun
 
                     _cctvStream.setFrameTimer(frame ? 60000 : nextTimeout); // backup refresh
 
+                    $window.watchdog();
+
                     return frame;
 
                 }).catch(function(err) {
