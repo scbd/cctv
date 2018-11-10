@@ -1,8 +1,8 @@
 <div class="schedule" auto-scroll="{ orientation : 'y', speed:50, open:5000, close:5000 }" auto-scroll-on="!!scheduleCtrl.reservations" auto-scroll-complete="scheduleCtrl.completed()">
     <div class="container">
         <h1 class="text-center">
+            <div><small class="text-muted">{{::scheduleCtrl.frame.content.room.location}}</small></div>
             {{::scheduleCtrl.frame.content.title}} 
-            <small class="text-muted">{{::scheduleCtrl.frame.content.room.location}}</small>
         </h1>
     </div>
 
@@ -52,7 +52,7 @@
             </tr>
         </table>
 
-        <div class="schedule-item text-center" ng-if="scheduleCtrl.reservations.length===0">
+        <div class="schedule-item text-center text-muted" ng-if="scheduleCtrl.reservations.length===0">
             There are no upcoming meetings or events at this time
         </div>
     </div>
