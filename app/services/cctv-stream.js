@@ -24,6 +24,7 @@ define(['app', 'lodash', 'moment-timezone', 'ngCookies', 'services/caches'], fun
                     if(!_cctvStream.streamId) { //auto-detect streamId
 
                         _cctvStream.streamId = $http.get('/api/v2016/conferences', { cache: cctvCache, params: {
+                            cache: true,
                             q: { active: true },
                             f: { "conference.streamId": 1 },
                             fo: 1
@@ -41,7 +42,7 @@ define(['app', 'lodash', 'moment-timezone', 'ngCookies', 'services/caches'], fun
 
                     return $q.when(_cctvStream.streamId).then(function(){
 
-                        return $http.get('/api/v2016/cctv-streams/'+encodeURIComponent(_cctvStream.streamId), { cache: cctvCache });
+                        return $http.get('/api/v2016/cctv-streams/'+encodeURIComponent(_cctvStream.streamId), { cache: cctvCache, params: { cache: true} });
 
                     }).then(function(res) {
 
@@ -275,7 +276,7 @@ define(['app', 'lodash', 'moment-timezone', 'ngCookies', 'services/caches'], fun
             CctvStream.prototype.refreshStreamData = function() {
 
                 var _cctvStream = this;
-                var options  = { params : { } };
+                var options  = { params : { cache: true } };
 
                 if(_cctvStream.fullReload) {
                     console.log("Reload");
@@ -296,7 +297,7 @@ define(['app', 'lodash', 'moment-timezone', 'ngCookies', 'services/caches'], fun
                     console.error(err.data || err);
                     console.error('Re-Try Loading stream with cached data');
 
-                    return $http.get('/api/v2016/cctv-streams/'+_cctvStream.streamId, _.defaults({ cache : cctvCache }, options));
+                    return $http.get('/api/v2016/cctv-streams/'+_cctvStream.streamId, _.defaults({ cache : cctvCache, params : { cache: true } }, options));
 
                 }).then(function(res) {
 
