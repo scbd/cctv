@@ -42,6 +42,9 @@ define(['moment-timezone', 'lodash', 'app', 'directives/auto-scroll', 'services/
                 _ctrl.frame = frame;
 
                 _ctrl.reservations = _(frame.reservations).map(function(r){
+
+                    r.videoUrl = r.video && (r.videoUrl || (_ctrl.rooms[(r.location||{}).room]).videoUrl);
+
                     return _.defaults(r, {
                         open : !(_ctrl.types[r.type]||{}).closed
                     });

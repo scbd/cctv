@@ -21,9 +21,15 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="schedule-item-type pull-right">
+                                <div class="schedule-item-type pull-right text-right">
                                     <span class="text-{{scheduleCtrl.types[r.type].style}}">{{::scheduleCtrl.types[r.type].title}}</span>
                                     <div  ng-if="::r.sideEvent" class="side-event-id hidden-xs text-muted text-right"><em>#{{::r.sideEvent.id}}</em></div>
+
+                                    <div ng-if="r.videoUrl">
+                                        <a class="label label-danger"  style="text-decoration: none" title="video stream" target="_blank" ng-href="{{r.videoUrl}}">
+                                            Webcast <i  class="fa fa-video-camera"></i>
+                                        </a>
+                                    </div>
                                 </div>
 
                                 <div class="schedule-item-location" ng-if="::scheduleCtrl.frame.content.type!='room'">
