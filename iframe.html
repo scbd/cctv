@@ -1,0 +1,65 @@
+<html>
+    <head>
+        <style>
+            /* CSS RESET */
+            html, body {
+                margin: 0;
+                padding: 0;
+                border: 0;
+                font-size: 100%;
+                font: inherit;
+                vertical-align: baseline;            
+            }
+
+            iframe {
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                border: none;
+            }
+
+        </style>
+
+        <script>
+
+            var urlParams = new URLSearchParams(window.location.search);
+
+            var ttl = parseInt(urlParams.get('ttl'))
+            var url = urlParams.get('url');
+
+            ttl = (!isNaN(ttl) || ttl > 0) ? ttl : undefined;
+
+
+            if(ttl && url) {
+                setInterval(refresh, ttl*60*1000);
+                setTimeout (refresh, 0);
+            }
+
+            function refresh() {
+
+                console.log(new Date(), "Refreshing iframe ", url, " every ", ttl , "minutes")
+
+                // Remove all children
+
+                while (document.body.firstChild) { 
+                    document.body.removeChild(document.body.firstChild);
+                }
+
+
+                // add the frame
+                var iframe = document.createElement("iframe");
+                
+                iframe.src = url;
+
+                document.body.appendChild(iframe);
+
+            }
+        </script>
+    </head>
+    <body>
+
+        <div><script> if(!ttl) document.writeln('Please specify "ttl" tiem before refresh (in minutes)'); </script></div>
+        <div><script> if(!url) document.writeln('Please specify "url" to display in the iframe'); </script></div>
+
+    </body>
+</html>
