@@ -1,14 +1,14 @@
-FROM node:4.8.7-alpine
+FROM node:12.16.0-alpine3.10
 
 RUN apk update  -q && \
     apk upgrade -q && \
-    apk add     -q --no-cache bash git curl
+    apk add     -q --no-cache bash git curl yarn
 
 WORKDIR /usr/src/app
 
-COPY package.json bower.json .bowerrc .npmrc ./
+COPY package.json .npmrc ./
 
-RUN npm install -q
+RUN yarn  --silent install  --production
 
 COPY . ./
 
