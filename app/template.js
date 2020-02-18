@@ -5,8 +5,8 @@ define(['app', 'filters/moment', 'directives/no-cursor', 'directives/auto-scroll
 
         var _ctrl = this;
 
-        if($location.path()=='/authorization')
-            return this;
+        if($location.path()=='/authorization') return this;
+        if($location.path()=='/current')       return this;
 
         if($location.path()!='/')
             $location.path('/').replace();

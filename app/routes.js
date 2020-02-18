@@ -7,6 +7,7 @@ define(['app', 'providers/extended-route', 'ngRoute'], function(app, _) { 'use s
 
         $routeProvider.
             when('/',                       { templateUrl : 'views/help/loading.html',           resolveController : false } ).
+            when('/current',                { templateUrl : 'views/help/loading.html',           resolveController : 'views/help/auto-detect' } ).
             when('/help/not-configured',    { templateUrl : 'views/help/not-configured.html',    resolveController : false } ).
             when('/help/event-information', { templateUrl : 'views/help/event-information.html', resolveController : true  } ).
 
