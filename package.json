@@ -20,7 +20,7 @@
     "@bower_components/requirejs-text": "requirejs/text#2.0.15",
     "ejs": "3.0.1",
     "express": "4.17.1",
-    "http-proxy": "1.18.0",
+    "http-proxy": "^1.18.1",
     "morgan": "1.9.1"
   },
   "license": "MIT",

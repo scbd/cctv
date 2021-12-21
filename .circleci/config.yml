@@ -11,14 +11,15 @@ _run:
     name: Build docker image
     command: |
       docker info
+      docker login -u $DOCKER_USER -p $DOCKER_PASS
       docker build -t output --build-arg COMMIT=$CIRCLE_SHA1 .
   testImage: &testImage
     name: Test docker image 
     command:  |
-      docker run --name test -d -p 8000:8000 output
+      docker run --name test -e BASE_PATH=/cctv/ -d -p 8000:8000 output
       sleep 3
       docker exec test curl --retry 10 --retry-delay 3 -v http://localhost:8000/
-      docker exec test curl --retry 10 --retry-delay 3 --header "base_url: /cctv/" localhost:8000/cctv  | grep "base href=\"/cctv/\""
+      docker exec test curl --retry 10 --retry-delay 3 localhost:8000/cctv  | grep "base href=\"/cctv/\""
 
 jobs:
   build:
@@ -96,6 +97,7 @@ workflows:
   build_and_deploy:
     jobs:
       - build:
+          context: docker-hub
           filters:
             branches:
               ignore:
