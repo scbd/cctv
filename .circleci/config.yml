@@ -16,11 +16,13 @@ _run:
   testImage: &testImage
     name: Test docker image 
     command:  |
-      docker run --name test -e BASE_PATH=/cctv/ -d -p 8000:8000 output
+      docker run --name by-env    -e BASE_PATH=/cctv/ -d output
+      docker run --name by-header                     -d output
       sleep 3
-      docker exec test curl --retry 10 --retry-delay 3 -v http://localhost:8000/
-      docker exec test curl --retry 10 --retry-delay 3 localhost:8000/cctv  | grep "base href=\"/cctv/\""
-
+      docker exec by-env    curl --retry 10 --retry-delay 3 -v http://localhost:8000/cctv
+      docker exec by-env    curl --retry 10 --retry-delay 3    http://localhost:8000/cctv  | grep "base href=\"/cctv/\""
+      docker exec by-header curl --retry 10 --retry-delay 3 -v http://localhost:8000/
+      docker exec by-header curl --retry 10 --retry-delay 3 -H "base_url: /test/" http://localhost:8000/  | grep "base href=\"/test/\""
 jobs:
   build:
     <<: *defaults
