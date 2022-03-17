@@ -43,7 +43,7 @@
 
                                 <div ng-if="r.agenda.visible && r.agenda.items.length">
                                     <span ng-repeat="item in r.agenda.items">
-                                        <span class="label agenda {{item.prefix}}" title="item.title">{{item.prefix||'Item'}} {{item.item}}</span>
+                                        <span ng-style="{ 'background-color' : item.color}" class="label agenda {{item.prefix}}" title="item.title">{{item.prefix||'Item'}} {{item.item}}</span>
                                         <span ng-if="(item.text || item.title) != (r.agenda.items[$index+1].text || r.agenda.items[$index+1].title)" style="font-size:85%;" ><span style="color:#c0c0c0">{{item.title}} <span ng-if="item.text"> - </span></span> <b>{{item.text}}</b><br></span>
                                     </span>
                                 </div>
