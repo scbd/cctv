@@ -162,7 +162,6 @@ ng-view.ng-leave { animation: fadeOut 2s; }
 }
 
 .middle > table > tbody > tr > td {
-    text-align:center;
     vertical-align:middle;
 }
 .middle > table > tbody > tr > td > p {
@@ -203,3 +202,4 @@ ng-view.ng-leave { animation: fadeOut 2s; }
 .label.agenda.CBD  { background: #009B48; }
 .label.agenda.CP   { background: #A05800; }
 .label.agenda.NP   { background: #0086B7; }
+.text-center       { text-align:  center;   }
