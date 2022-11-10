@@ -10,9 +10,9 @@
   version "1.5.7"
   resolved "https://codeload.github.com/angular/bower-angular-cookies/tar.gz/265a279cd238f1fb012b2ea985987d3e00c183f6"
 
-"@bower_components/angular-flex@git://github.com/scbd/angular-flex.git#1.0.1":
+"@bower_components/angular-flex@https://github.com/scbd/angular-flex.git#1.0.1":
   version "1.0.1"
-  resolved "git://github.com/scbd/angular-flex.git#28c064ba50bbd374e3fbbd565199f0d12ae02bda"
+  resolved "https://github.com/scbd/angular-flex.git#28c064ba50bbd374e3fbbd565199f0d12ae02bda"
 
 "@bower_components/angular-route@angular/bower-angular-route#1.5.7":
   version "1.5.7"

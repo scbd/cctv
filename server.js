@@ -29,6 +29,9 @@ appRoutes.use('/app',      express.static(__dirname + '/app'));
 appRoutes.use('/app/libs', express.static(__dirname + '/node_modules/@bower_components' ));
 appRoutes.all('/app/*',    (req, res) => res.status(404).send());
 appRoutes.get('/*',        (req, res) => { 
+
+    res.setHeader('X-Frame-Options', 'ALLOW');
+
     const baseUrl = toBasePath(basePath || req.headers.base_url);
     res.render('template', { baseUrl: urlSafe(baseUrl) })
 });
