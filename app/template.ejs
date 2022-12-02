@@ -40,7 +40,7 @@
 
 <body no-cursor="5000">
     <header  ng-cloak class="header panel panel-default" ng-click="templateCtrl.completed(templateCtrl.frame)">
-        <div class="panel-body">
+        <div class="panel-body" ng-style="{{templateCtrl.paddings}}">
             <div class="pull-left">
                 <img src="app/resources/images/cbd-leaf-white.svg" style="height:50px;margin-right:10px">
             </div>
@@ -56,7 +56,8 @@
         </div>
     </header>
 
-    <ng-view ng-class="{ 'has-news' : templateCtrl.news }"></ng-view>
+    <ng-view ng-class="{ 'has-news' : templateCtrl.news }" ng-style="{{templateCtrl.paddings}}">
+    </ng-view>
 
     <div class="news panel panel-default ng-cloak" ng-animate-swap="templateCtrl.news" ng-init="newsLevels={ warning : 'text-warning', alert : 'text-danger' } ">
         <div class="news-content {{newsLevels[templateCtrl.news.content.level]}}" auto-scroll="{ orientation : 'x', autoReset:true, speed:125, open:3000, timeout:8000 }" auto-scroll-on="templateCtrl.news" auto-scroll-complete="templateCtrl.completed(templateCtrl.news)" ng-click="templateCtrl.completed(templateCtrl.news)" >

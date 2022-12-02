@@ -4,6 +4,13 @@ define(['app', 'filters/moment', 'directives/no-cursor', 'directives/auto-scroll
                                   function($rootScope,   $http,   $timeout,   $interval,   $q,   $location,   $injector,   cctvCache,   cctvStream) {
 
         var _ctrl = this;
+       
+
+        var qs = $location.search();
+        _ctrl.paddings = {
+            'padding-left'  : qs.leftPadding,
+            'padding-right' : qs.rightPadding
+        }
 
         if($location.path()=='/authorization') return this;
         if($location.path()=='/current')       return this;
