@@ -50,7 +50,30 @@ define(['moment-timezone', 'lodash', 'app', 'directives/auto-scroll', 'services/
                     });
                 }).sortBy(sortKey).value();
 
-            }).catch(function(err) {
+            })
+            .then(function(){
+                var meetingCodes = _( _ctrl.reservations).flatten().map('agenda.items').flatten().map('meeting').uniq().value();
+
+                var meetingsReq = $http.get('/api/v2016/meetings', { params: { q: { EVT_CD: { $in: meetingCodes } }, f : { EVT_TIT_EN:1, EVT_CD:1, printSmart:1 , agenda:1, uploadStatement:1 }, cache: true } })
+                                        .then(function(res){
+                                            return res.data
+                                        });
+                                
+                return meetingsReq.then(function(meetings){
+                   
+                    _ctrl.reservations.forEach(res=>{
+                        res.agenda?.items?.forEach(function(rItem) {
+
+                            var mAgenda        = _(meetings)     .where({ EVT_CD:     rItem.meeting }).map('agenda').flatten().first();
+                            var mItem          = _(mAgenda?.items).where({ item:     rItem.item    }).first();
+
+                            rItem.code      = mItem?.code;
+                        
+                        });
+                    })
+                });
+            })
+            .catch(function(err) {
                 console.error(err.data || err);
                 completed();
             });
