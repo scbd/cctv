@@ -41,8 +41,8 @@
 <body no-cursor="5000">
     <header  ng-cloak class="header panel panel-default" ng-click="templateCtrl.completed(templateCtrl.frame)">
         <div class="panel-body" ng-style="{{templateCtrl.paddings}}">
-            <div class="pull-left">
-                <img src="app/resources/images/cbd-leaf-white.svg" style="height:50px;margin-right:10px">
+            <div ng-if="templateCtrl.getLogoUri()" class="pull-left">
+                <img ng-src="{{templateCtrl.getLogoUri()}}" style="height:50px;margin-right:10px">
             </div>
             <div class="header-datetime" ng-show="templateCtrl.now">
                 <span class="date text-nowrap text-muted">

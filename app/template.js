@@ -3,8 +3,9 @@ define(['app', 'filters/moment', 'directives/no-cursor', 'directives/auto-scroll
     app.controller('TemplateController', ['$rootScope', '$http', '$timeout', '$interval', '$q', '$location', '$injector', 'cctvCache', 'cctvStream',
                                   function($rootScope,   $http,   $timeout,   $interval,   $q,   $location,   $injector,   cctvCache,   cctvStream) {
 
-        var _ctrl = this;
-       
+        const _ctrl = this;
+
+        _ctrl.getLogoUri = getLogoUri
 
         var qs = $location.search();
         _ctrl.paddings = {
@@ -89,6 +90,19 @@ define(['app', 'filters/moment', 'directives/no-cursor', 'directives/auto-scroll
         //==============================
         function helpFrame() {
             $location.path('/help/event-information').replace();
+        }
+
+        //==============================
+        //
+        //==============================
+        function getLogoUri() {
+            const isCBD =  _ctrl?.event?.institution === 'CBD'
+            const logo  = _ctrl?.event?.schedule?.cctv?.logo
+
+            if(isCBD && !logo) return 'app/resources/images/cbd-leaf-white.svg'
+            if(isCBD && logo) return logo
+
+            if(!isCBD) return logo
         }
     }]);
 });
