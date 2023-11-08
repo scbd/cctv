@@ -1,4 +1,8 @@
-(function(document) { 'use strict';
+export const cdnUrl = null;
+
+export default function bootApp(window, require, defineX) {
+    
+    const { document } = window;
 
     require.config({
         waitSeconds: 30,
@@ -15,7 +19,7 @@
             'bootstrap'       : 'libs/bootswatch-dist/js/bootstrap.min',
             'lodash'          : 'libs/lodash/lodash.min',
             'moment'          : 'libs/moment/min/moment.min',
-            'moment-timezone' : 'libs/moment-timezone/builds/moment-timezone-with-data.min',
+            'moment-timezone' : 'libs/moment-timezone/builds/moment-timezone-with-data-10-year-range.min',
         },
         shim: {
             'libs/angular/angular.min' : { deps : ['jquery'] },
@@ -28,30 +32,22 @@
         },
     });
 
-    // BOOT
-    require(['angular', 'app', 'bootstrap', 'routes', 'template'], function(ng, app) {
-        ng.element(document).ready(function() {
+
+
+    if(document) { // BOOT App 
+        
+        var deps = [
+            import('angular'),
+            import('./app'),
+            import('bootstrap'),
+            import('./routes'),
+            import('./template'),
+        ];
+        // BOOT
+        Promise.all(deps).then(([ng, { default: app }]) => {
+            ng.element(document).ready(function () {
             ng.bootstrap(document, [app.name]);
-        });
-    });
-})(document);
-// MISC
-
-//==================================================
-// Protect window.console method calls, e.g. console is not defined on IE
-// unless dev tools are open, and IE doesn't define console.debug
-//==================================================
-(function fixIEConsole() { 'use strict';
-
-    if (!window.console) {
-        window.console = {};
+            });
+        }).catch((e)=>{ console.error('Error bootstrapping the app:', e) });
     }
-
-    var methods = ["log", "info", "warn", "error", "debug", "trace", "dir", "group","groupCollapsed", "groupEnd", "time", "timeEnd", "profile", "profileEnd", "dirxml", "assert", "count", "markTimeline", "timeStamp", "clear"];
-    var noop    = function() {};
-
-    for(var i = 0; i < methods.length; i++) {
-        if (!window.console[methods[i]])
-            window.console[methods[i]] = noop;
-    }
-})();
+}

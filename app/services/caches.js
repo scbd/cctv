@@ -1,4 +1,4 @@
-define(['app'], function(app) { 'use strict';
+import app from '~/app';
 
     app.factory('cctvCache', ['$cacheFactory', function($cacheFactory) {
 
@@ -30,5 +30,3 @@ define(['app'], function(app) { 'use strict';
 
         return cctvCache;
     }]);
-
-});

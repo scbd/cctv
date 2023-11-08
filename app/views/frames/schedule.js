@@ -1,6 +1,13 @@
-define(['moment-timezone', 'lodash', 'app', 'directives/auto-scroll', 'services/caches', 'services/cctv-stream'], function(moment, _) { "use strict";
+import moment from 'moment-timezone'
+import _ from 'lodash'
+import '~/app'
+import '~/directives/auto-scroll'
+import '~/services/caches'
+import '~/services/cctv-stream'
 
-	return ['$rootScope', '$http', '$route', '$q', '$timeout', 'cctvCache', 'cctvStream', function($rootScope, $http, $route, $q, $timeout, cctvCache, cctvStream) {
+export { default as template } from './schedule.html'
+
+export default ['$rootScope', '$http', '$route', '$q', '$timeout', 'cctvCache', 'cctvStream', function($rootScope, $http, $route, $q, $timeout, cctvCache, cctvStream) {
 
         var _ctrl = this;
 
@@ -101,4 +108,3 @@ define(['moment-timezone', 'lodash', 'app', 'directives/auto-scroll', 'services/
             cctvStream.completed(_ctrl.frame);
         }
 	}];
-});

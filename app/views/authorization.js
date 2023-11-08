@@ -1,6 +1,12 @@
-define(['lodash', 'jquery', 'moment-timezone', 'ngCookies'], function(_, $, moment) { "use strict";
+import '~/app'
+import _ from 'lodash'
+import $ from 'jquery'
+import moment from 'moment-timezone'
+import 'ngCookies'
 
-	return ['$cookies', '$http', '$location', '$window', function($cookies, $http, $location, $window) {
+export { default as template } from './authorization.html'
+
+export default ['$cookies', '$http', '$location', '$window', function($cookies, $http, $location, $window) {
 
         var _ctrl = this;
 
@@ -184,4 +190,3 @@ define(['lodash', 'jquery', 'moment-timezone', 'ngCookies'], function(_, $, mome
             _ctrl.error = error;
         }
 	}];
-});

@@ -25,6 +25,7 @@ app.all('/api/*', (req, res) => proxy.web(req, res, { target: apiUrl, changeOrig
 
 const appRoutes = new express.Router();
 
+appRoutes.use('/app',      express.static(__dirname + '/dist'));
 appRoutes.use('/app',      express.static(__dirname + '/app'));
 appRoutes.use('/app/libs', express.static(__dirname + '/node_modules/@bower_components' ));
 appRoutes.all('/app/*',    (req, res) => res.status(404).send());

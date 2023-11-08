@@ -1,5 +1,6 @@
 {
   "name": "cctv",
+  "type": "module",
   "description": "cctv of the Convention on Biological Diversity",
   "dependencies": {
     "@bower_components/angular": "angular/bower-angular#1.5.7",
@@ -15,13 +16,26 @@
     "@bower_components/jquery": "jquery/jquery-dist#2.2.4",
     "@bower_components/lodash": "lodash/lodash#3.10.1",
     "@bower_components/moment": "moment/moment#2.16.0",
-    "@bower_components/moment-timezone": "moment/moment-timezone#0.5.9",
+    "@bower_components/moment-timezone": "moment/moment-timezone#0.5.43",
     "@bower_components/requirejs": "jrburke/requirejs-bower#2.3.2",
     "@bower_components/requirejs-text": "requirejs/text#2.0.15",
     "ejs": "3.0.1",
     "express": "4.17.1",
     "http-proxy": "^1.18.1",
     "morgan": "1.9.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.2",
+    "@babel/preset-env": "^7.23.2",
+    "@rollup/plugin-alias": "^5.0.1",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-json": "^6.0.1",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "rollup": "^4.3.0",
+    "rollup-plugin-dynamic-import-variables": "^1.1.0",
+    "rollup-plugin-string": "^3.0.0",
+    "rollup-plugin-terser": "^7.0.2"
   },
   "license": "MIT",
   "private": true,
@@ -30,11 +44,12 @@
     "url": "https://github.com/scbd/cctv.git"
   },
   "scripts": {
-    "run": "open http://localhost:2000?streamId=2722758990858617&datetime=2018-11-22 && node server",
-    "outdated-deps": "yarn outdated",
-    "upgrade-deps": "yarn upgrade-interactive --latest",
-    "clean-reinstall": "if test -f yarn.lock; then rm yarn.lock; fi && if test -f node_modules; then rm -rf node_modules; fi && yarn install --force",
-    "postinstall": "node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), 'app/libs', 'junction') } catch (e) { }\""
+    "postinstall": "node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), 'app/libs', 'junction') } catch (e) { }\"",
+    "build": "rm -rf ./dist && rollup -c",
+    "dev": "rm -rf ./dist && rollup -c --watch",
+    "server": "node server",
+    "eslint": "npx eslint . --fix",
+    "clean-reinstall": "rm -rf ./node_modules && rm -rf ./app/libs && yarn install"
   },
   "engines": {
     "yarn": ">= 1.0.0"

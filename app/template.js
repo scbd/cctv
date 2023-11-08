@@ -1,4 +1,9 @@
-define(['app', 'filters/moment', 'directives/no-cursor', 'directives/auto-scroll', 'services/caches', 'services/cctv-stream'], function(app) { 'use strict';
+import app from '~/app';
+import '~/filters/moment';
+import '~/directives/no-cursor';
+import '~/directives/auto-scroll';
+import '~/services/caches';
+import '~/services/cctv-stream';
 
     app.controller('TemplateController', ['$rootScope', '$http', '$timeout', '$interval', '$q', '$location', '$injector', 'cctvCache', 'cctvStream',
                                   function($rootScope,   $http,   $timeout,   $interval,   $q,   $location,   $injector,   cctvCache,   cctvStream) {
@@ -20,7 +25,7 @@ define(['app', 'filters/moment', 'directives/no-cursor', 'directives/auto-scroll
             $location.path('/').replace();
 
         if(!cctvStream.streamId)
-            $location.path('/help/not-configured').replace();
+            $location.path('/current').replace();
 
         _ctrl.completed  = completed;
 
@@ -105,4 +110,3 @@ define(['app', 'filters/moment', 'directives/no-cursor', 'directives/auto-scroll
             if(!isCBD) return logo
         }
     }]);
-});

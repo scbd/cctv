@@ -1,6 +1,8 @@
-define(['app'], function() { "use strict";
+import '~/app';
 
-	return ['$http', '$location', function($http, $location) {
+export { default as template } from './loading.html'
+
+export default ['$http', '$location', function($http, $location) {
 
         $http.get('/api/v2016/conferences', { params: {
             q: {
@@ -34,4 +36,3 @@ define(['app'], function() { "use strict";
             window.location = $location.absUrl(); // Force reload new location
         })
 	}];
-});

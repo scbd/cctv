@@ -1,4 +1,4 @@
-define(['app'], function(app) { 'use strict';
+import app from '~/app';
 
     app.directive('noCursor', ['$timeout', function($timeout) {
 
@@ -67,4 +67,4 @@ define(['app'], function(app) { 'use strict';
             }
         };
     }]);
-});
+
