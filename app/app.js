@@ -47,16 +47,17 @@ import 'ngAnimate';
         };
     }]);
 
+    const API_URL = $("html").attr('api-url') || 'https://api.cbd.int';
+
 	app.factory('apiRebase', ["$location", function($location) {
 
 		return {
 			request: function(config) {
 
-                var rewrite = config  .url   .toLowerCase().indexOf('/api/')===0 &&
-                             $location.host().toLowerCase() == 'www.cbd.int';
+                var rewrite = config.url.toLowerCase().indexOf('/api/')===0 
 
 				if(rewrite)
-                    config.url = 'https://api.cbd.int' + config.url;
+                    config.url = API_URL + config.url;
 
 				return config;
 			}

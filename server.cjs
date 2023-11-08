@@ -34,7 +34,7 @@ appRoutes.get('/*',        (req, res) => {
     res.setHeader('X-Frame-Options', 'ALLOW');
 
     const baseUrl = toBasePath(basePath || req.headers.base_url);
-    res.render('template', { baseUrl: urlSafe(baseUrl) })
+    res.render('template', { baseUrl: urlSafe(baseUrl), apiUrl })
 });
 
 // START SERVER
