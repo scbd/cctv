@@ -1,4 +1,9 @@
-define(['angular', 'jquery', 'ngSanitize', 'ngRoute', 'ngCookies', 'ngAnimate'], function(angular, $) { 'use strict';
+import angular from 'angular';
+import $ from 'jquery';
+import 'ngSanitize';
+import 'ngRoute';
+import 'ngCookies';
+import 'ngAnimate';
 
     var deps = ['ngSanitize', 'ngRoute', 'ngCookies', 'ngAnimate'];
 
@@ -56,7 +61,7 @@ define(['angular', 'jquery', 'ngSanitize', 'ngRoute', 'ngCookies', 'ngAnimate'],
 				return config;
 			}
 		};
-	}]);
+	}]);;
 
-    return app;
-});
+
+export default app;

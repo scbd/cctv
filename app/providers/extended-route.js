@@ -1,4 +1,7 @@
-define(['require', 'app', 'angular', 'ngRoute', 'lodash'], function(require, app, angular) { 'use strict';
+import app from '~/app';
+import angular from 'angular';
+import 'ngRoute';
+import 'lodash';
 
     var baseUrl = require.toUrl('');
 
@@ -105,4 +108,3 @@ define(['require', 'app', 'angular', 'ngRoute', 'lodash'], function(require, app
 
         return angular.extend($routeProvider, { when: new_when });
     }]);
-});

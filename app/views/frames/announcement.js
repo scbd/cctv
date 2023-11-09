@@ -1,6 +1,14 @@
-define(['lodash', 'jquery', 'app', 'directives/auto-scroll', 'services/caches', 'services/cctv-stream', 'filters/html-sanitizer'], function(_, $) { "use strict";
+import _ from 'lodash';
+import $ from 'jquery';
+import '~/app';
+import '~/directives/auto-scroll';
+import '~/services/caches';
+import '~/services/cctv-stream';
+import '~/filters/html-sanitizer';
 
-	return ['$rootScope', '$http', '$route', '$timeout', 'cctvCache', 'cctvStream', '$filter', function($rootScope, $http, $route, $timeout, cctvCache, cctvStream, $filter) {
+export { default as template } from './announcement.html'
+
+export default ['$rootScope', '$http', '$route', '$timeout', 'cctvCache', 'cctvStream', '$filter', function($rootScope, $http, $route, $timeout, cctvCache, cctvStream, $filter) {
 
         var _ctrl = this;
 
@@ -56,4 +64,3 @@ define(['lodash', 'jquery', 'app', 'directives/auto-scroll', 'services/caches', 
             return dom.html();
         }
 	}];
-});

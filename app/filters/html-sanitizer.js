@@ -1,4 +1,6 @@
-define(['app', 'jquery', 'lodash'], function(app, $, _) { 'use strict';
+import app from '~/app';
+import $ from 'jquery';
+import _ from 'lodash';
 
     var inlineTextClasses = [
         'text-lowercase',
@@ -118,5 +120,3 @@ define(['app', 'jquery', 'lodash'], function(app, $, _) { 'use strict';
             return $sce.trustAsHtml(sanitizedHtml);
         };
     }]);
-
-});

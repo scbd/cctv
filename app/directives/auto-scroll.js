@@ -1,4 +1,4 @@
-define(['app'], function(app) { 'use strict';
+import app from '~/app';
 
     app.directive('autoScroll', ['$timeout', function($timeout) {
 
@@ -120,4 +120,3 @@ define(['app'], function(app) { 'use strict';
             }
         };
     }]);
-});

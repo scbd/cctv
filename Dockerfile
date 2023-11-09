@@ -1,4 +1,4 @@
-FROM node:12.16.0-alpine3.10
+FROM node:18.18-alpine3.18
 
 RUN apk update  -q && \
     apk upgrade -q && \
@@ -6,14 +6,16 @@ RUN apk update  -q && \
 
 WORKDIR /usr/src/app
 
-COPY package.json .npmrc ./
+COPY package.json yarn.lock .npmrc ./
 
-RUN yarn  --silent install  --production
+RUN yarn install
 
 COPY . ./
+
+RUN yarn  run build
 
 ENV PORT 8000
 
 EXPOSE 8000
 
-CMD ["node", "server"]
+CMD ["node", "server.cjs"]

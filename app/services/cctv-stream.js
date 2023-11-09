@@ -1,4 +1,8 @@
-define(['app', 'lodash', 'moment-timezone', 'ngCookies', 'services/caches'], function(app, _, moment) { 'use strict';
+import app from '~/app';
+import _ from 'lodash';
+import moment from 'moment-timezone';
+import 'ngCookies';
+import '~/services/caches';
 
     app.provider('cctvStream', [function() {
 
@@ -20,25 +24,6 @@ define(['app', 'lodash', 'moment-timezone', 'ngCookies', 'services/caches'], fun
 
                     if(_cctvStream.event)
                         return $q.resolve();
-
-                    if(!_cctvStream.streamId) { //auto-detect streamId
-
-                        _cctvStream.streamId = $http.get('/api/v2016/conferences', { cache: cctvCache, params: {
-                            cache: true,
-                            q: { active: true },
-                            f: { "conference.streamId": 1 },
-                            fo: 1
-
-                        } }).then(function(res){
-
-                            var streamId = (res.data.conference||{}).streamId;
-
-                            if(!streamId)
-                                throw "CCTV is not configured.";
-
-                            return _cctvStream.streamId = streamId;
-                        });
-                    }
 
                     return $q.when(_cctvStream.streamId).then(function(){
 
@@ -323,4 +308,3 @@ define(['app', 'lodash', 'moment-timezone', 'ngCookies', 'services/caches'], fun
 
         }];
     }]);
-});

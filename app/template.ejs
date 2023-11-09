@@ -2,6 +2,7 @@
 <html lang="en" ng-controller="TemplateController as templateCtrl">
 
 <head>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=Promise%2Ces6"></script>
     <script>
         var watchdog_timer;
 
@@ -35,7 +36,14 @@
     <link rel="stylesheet" href="app/libs/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="app/libs/animate.css/animate.min.css">
     <link rel="stylesheet" href="app/resources/style.css">
-    <script src="app/libs/requirejs/require.js" data-main="app/boot.js"></script>
+    <script src="app/libs/requirejs/require.js"></script>
+    <script>
+        require.config({ waitSeconds: 30, baseUrl : '<%=baseUrl%>app/' });
+        require(["boot"], function(boot){
+            var bootFn = boot.default || boot;
+            bootFn(window, require, define);
+        });
+    </script>
 </head>
 
 <body no-cursor="5000">

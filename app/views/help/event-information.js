@@ -1,6 +1,10 @@
-define(['app', 'services/cctv-stream', 'services/caches'], function() { "use strict";
+import '~/app'
+import '~/services/caches'
+import '~/services/cctv-stream'
 
-	return ['cctvStream', function(cctvStream) {
+export { default as template } from './event-information.html'
+
+export default ['cctvStream', function(cctvStream) {
 
         var _ctrl = this;
 
@@ -13,4 +17,3 @@ define(['app', 'services/cctv-stream', 'services/caches'], function() { "use str
         });
 
 	}];
-});
