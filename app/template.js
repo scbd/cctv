@@ -5,6 +5,8 @@ import '~/directives/auto-scroll';
 import '~/services/caches';
 import '~/services/cctv-stream';
 
+const ZoomRe = /^\d+(\.\d+)*$/;
+
     app.controller('TemplateController', ['$rootScope', '$http', '$timeout', '$interval', '$q', '$location', '$injector', 'cctvCache', 'cctvStream',
                                   function($rootScope,   $http,   $timeout,   $interval,   $q,   $location,   $injector,   cctvCache,   cctvStream) {
 
@@ -17,6 +19,8 @@ import '~/services/cctv-stream';
             'padding-left'  : qs.leftPadding,
             'padding-right' : qs.rightPadding
         }
+
+        if(ZoomRe.test(qs.zoom||'')) document.body.style.zoom=qs.zoom;
 
         if($location.path()=='/authorization') return this;
         if($location.path()=='/current')       return this;
