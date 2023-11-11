@@ -95,6 +95,7 @@ ng-view.ng-leave { animation: fadeOut 2s; }
 .schedule .schedule-item .schedule-item-type {
     margin-top: 0px;
     margin-right: 5px;
+    margin-left: 5px;
 }
 
 .schedule .schedule-item .schedule-item-type > .side-event-id {
@@ -109,9 +110,7 @@ ng-view.ng-leave { animation: fadeOut 2s; }
 }
 
 .schedule .schedule-item .schedule-item-title {
-/*    max-height:4.2em;
-    overflow-y:hidden;
-    text-overflow: ellipsis; */ /* DISABLE FOR PLENARY */
+    font-weight: bold;
 }
 
 .schedule .schedule-item.ng-enter {
