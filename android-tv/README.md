@@ -71,11 +71,17 @@ adb -s 192.168.xxx.xxx:5555 shell ...
 Using Command line run 
 
 ```sh
+export ANDROID_HOME=~/Library/Android/sdk
 ./gradlew build
 ```
 Should generate output APK files in `app/build/outputs/apk` / `debug` or `release`
 
 OR use Android Studio UI to build the apk file: Menu `Build` > `Build App Bundles...` > `Build APK(s)`
+
+Make sure `local.properties` is set 
+```sh 
+echo sdk.dir=$HOME/Library/Android/sdk > local.properties 
+```
 
 ## Install the app
 
