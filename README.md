@@ -1,7 +1,5 @@
 # CCTV
 
-[![Dependency Status](https://david-dm.org/scbd/cctv.svg)](https://david-dm.org/scbd/cctv)
-
 
 ## Use of iframe.html
 
@@ -14,3 +12,7 @@ Create a shortcut int the computer startup. eg:
 ```
 chrome.exe --kiosk file:///path/to/iframe.html?ttl=15&url=https%3A%2F%2Fwww.cbd.int%2Fcctv%3FstreamId%3D{streamId}
 ```
+
+# CCTV Android App
+
+Use [these instructions](./android-tv/README.md) to build/install app on android-tv device (eg FireTv stick)
