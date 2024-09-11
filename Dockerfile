@@ -1,4 +1,4 @@
-FROM node:18.18-alpine3.18
+FROM node:20.11-alpine
 
 RUN apk update  -q && \
     apk upgrade -q && \
@@ -18,4 +18,4 @@ ENV PORT 8000
 
 EXPOSE 8000
 
-CMD ["node", "server.cjs"]
+CMD ["node", "server.js"]
