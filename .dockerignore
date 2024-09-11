@@ -5,3 +5,4 @@ app_build
 .DS_Store
 .git
 dist
+android-tv
