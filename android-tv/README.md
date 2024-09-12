@@ -36,6 +36,26 @@ https://www.howtogeek.com/813766/fire-tv-developer-options/
 
 https://developer.amazon.com/docs/fire-tv/connecting-adb-to-device.html
 
+#### Automated process
+
+- Get the IP from your device: `My Fire Tv` > `About` > `Network` 
+
+*The command assume that `cctv/android-tv` is the current working directory*
+
+*Ensure that you have access to the FireTv as you will need to allow access on the device*
+
+```sh
+./install-app.sh 192.168.xxx.xxx
+```
+
+Follow the instructions displayed on the screen.
+
+When finished, all the apps should be installed on the FireTv and you can continue on the configuration of the AutoStart app (the installation will be done as part of the automated process).
+
+#### Manual process
+
+*Follow those instructions in case you are unable of using the automated process.*
+
 #### Connect to your device using ADB 
 
 Add `adb` to your command line path. 
@@ -67,6 +87,8 @@ adb -s 192.168.xxx.xxx:5555 shell ...
 ```
 
 ## Build the App
+
+*This step is optional as the compiled version is already available on `app/build/outputs/apk` / `debug` or `release`.*
 
 Using Command line run 
 
