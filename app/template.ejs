@@ -44,6 +44,30 @@
             bootFn(window, require, define);
         });
     </script>
+    <style>
+        footer{
+            position:fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            bottom:0;
+            width:100vw;
+            margin-bottom:0;
+            background-color:rgb(6, 6, 6);
+            z-index: 100;
+        }
+
+        .footer-text{
+            margin-top:8px;
+            margin-bottom:8px;
+            font-size:larger;
+        }
+        .footer-img{
+            height:25px;
+            margin: 0 2px 5px 10px; 
+            fill:#888888;
+        }
+    </style>
 </head>
 
 <body no-cursor="5000">
@@ -73,6 +97,11 @@
         </div>
     </div>
 
+    <footer  ng-cloak >
+        <div  class="footer-text">Systems by </div>
+        <img class="footer-img" src="app/resources/images/cbd-leaf-grey.svg" >
+        <div  class="footer-text"> SCBD</div>
+    </footer>
 </body>
 
 </html>
