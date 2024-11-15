@@ -4,7 +4,7 @@ This app is used to load cctv/current calendar on an android-tv base device
 
 ### WARNING
 
-This procedure use retquires to enable development mode and enables Android Debug Bridge on your device. 
+This procedure requires to enable development mode and enables Android Debug Bridge on your device. 
 It is strongly recommended to turn ADB off when installation is completed
 
 [How to Turn ADB off](#turn-adb-off)
@@ -40,15 +40,22 @@ https://developer.amazon.com/docs/fire-tv/connecting-adb-to-device.html
 
 - Get the IP from your device: `My Fire Tv` > `About` > `Network` 
 
-*The command assume that `cctv/android-tv` is the current working directory*
+*On our computer terminal, make the `cctv/android-tv` as the current working directory*
 
 *Ensure that you have access to the FireTv as you will need to allow access on the device*
 
+*You might also need to add the following to avoid any error*
+```sh
+export PATH=~/Library/Android/sdk/platform-tools/:$PATH
+```
+
+*Install the app*
 ```sh
 ./install-app.sh 192.168.xxx.xxx
 ```
+*Using the remote, you may need to allow installation on the firestick*
 
-Follow the instructions displayed on the screen.
+*Restart the device after intallation*
 
 When finished, all the apps should be installed on the FireTv and you can continue on the configuration of the AutoStart app (the installation will be done as part of the automated process).
 
@@ -57,6 +64,8 @@ When finished, all the apps should be installed on the FireTv and you can contin
 *Follow those instructions in case you are unable of using the automated process.*
 
 #### Connect to your device using ADB 
+
+*Check that the device is on `debug` mode*
 
 Add `adb` to your command line path. 
 *All ADB command assume that `cctv/android-tv` is the current working directory*
@@ -131,10 +140,10 @@ Install [Launch-On-Boot](https://github.com/ITVlab/Launch-On-Boot). *Pre-compile
 adb install ./extra-app/news.androidtv.launchonboot_12.apk
 ```
 
-Run the app and configure with the following:
+Run the app on the device and configure with the following:
 - Enabled: `ON`
 - Launch Tv App on Boot: `OFF`
-- Luanch when device wakes up: `ON`
+- Launch when device wakes up: `ON`
 - Select App: `Eunomia CCTV`
 
 Test it: 
