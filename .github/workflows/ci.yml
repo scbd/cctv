@@ -84,16 +84,19 @@ jobs:
           cache-to: type=gha,mode=max
 
       # Two containers: one serving under a base path from BASE_PATH, one deriving it
-      # from the base_url request header. All assertions run inside the containers.
+      # from the base_url request header. curl runs on the runner, not in the
+      # container - the runtime image deliberately ships without it.
       - name: Test image
         run: |
-          docker run --name by-env -e BASE_PATH=/cctv/ -d ci-build:local
-          docker run --name by-header                  -d ci-build:local
-          sleep 5
-          docker exec by-env    curl --retry 10 --retry-delay 3 -v http://localhost:8000/cctv
-          docker exec by-env    curl --retry 10 --retry-delay 3    http://localhost:8000/cctv | grep 'base href="/cctv/"'
-          docker exec by-header curl --retry 10 --retry-delay 3 -v http://localhost:8000/
-          docker exec by-header curl --retry 10 --retry-delay 3 -H "base_url: /test/" http://localhost:8000/ | grep 'base href="/test/"'
+          docker run --name by-env -e BASE_PATH=/cctv/ -p 8001:8000 -d ci-build:local
+          docker run --name by-header                  -p 8002:8000 -d ci-build:local
+
+          curl --retry 10 --retry-delay 3 --retry-all-errors -sf http://localhost:8001/cctv | grep 'base href="/cctv/"'
+          curl --retry 10 --retry-delay 3 --retry-all-errors -sf -H "base_url: /test/" http://localhost:8002/ | grep 'base href="/test/"'
+
+      - name: Container logs
+        if: failure()
+        run: docker logs by-env; docker logs by-header
 
       - name: Push image
         if: steps.meta.outputs.push == 'true'
