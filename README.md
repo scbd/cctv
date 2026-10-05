@@ -1,5 +1,12 @@
 # CCTV
 
+## Environment variables
+
+| Variable    | Default                   | Description                                                                                     |
+| ----------- | ------------------------- | ----------------------------------------------------------------------------------------------- |
+| `API_URL`   | `https://api.cbd.int:443` | Target for the `/api/*` proxy and the `/current` conference lookup                              |
+| `BASE_PATH` | none                      | Path the app is served under (eg `/cctv/`); if unset, uses the `base_url` request header or `/` |
+| `PORT`      | `2000` (`8000` in Docker) | HTTP listen port                                                                                |
 
 ## Use of iframe.html
 
@@ -16,3 +23,14 @@ chrome.exe --kiosk file:///path/to/iframe.html?ttl=15&url=https%3A%2F%2Fwww.cbd.
 # CCTV Android App
 
 Use [these instructions](./android-tv/README.md) to build/install app on android-tv device (eg FireTv stick)
+
+# CI/CD
+
+GitHub Actions ([ci.yml](.github/workflows/ci.yml)) builds and tests the Docker image `scbd/cctv` on every push. It pushes calver tags (`YYYY.N.N`, also tagged `latest`), `master` and `dev`; other branches are built but not pushed.
+
+| Secret               | Scope | Description                                               |
+| -------------------- | ----- | --------------------------------------------------------- |
+| `DOCKERHUB_USERNAME` | org   | Docker Hub username                                       |
+| `DOCKERHUB_TOKEN`    | org   | Docker Hub access token                                   |
+| `WEBHOOK_URL_MASTER` | repo  | Portainer service webhook to redeploy `master` (optional) |
+| `WEBHOOK_URL_DEV`    | repo  | Portainer service webhook to redeploy `dev` (optional)    |
