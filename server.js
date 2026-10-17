@@ -3,6 +3,7 @@ process.on('SIGTERM', ()=>process.exit());
 // CREATE HTTP SERVER AND PROXY
 import ky        from 'ky';
 import path      from 'path';
+import crypto    from 'crypto';
 import express   from 'express';
 import morgan    from 'morgan';
 import httpProxy from 'http-proxy';
@@ -33,14 +34,26 @@ appRoutes.use('/app',      express.static(__dirname + '/dist'));
 appRoutes.use('/app',      express.static(__dirname + '/app'));
 appRoutes.use('/app/libs', express.static(__dirname + '/node_modules/@bower_components' ));
 appRoutes.all('/app/*',    (req, res) => res.status(404).send());
-appRoutes.get('/current', autoDectecCurrent);
+appRoutes.get('/monitor',  getMonitor);
 
-appRoutes.get('/*',        (req, res) => { 
+appRoutes.get('/*',        async (req, res) => { 
 
     res.setHeader('X-Frame-Options', 'ALLOW');
+    res.setHeader('Cache-Control',   'no-store'); // page embeds the monitor's uid and stream
 
     const baseUrl = toBasePath(basePath || req.headers.base_url);
-    res.render('template', { baseUrl: urlSafe(baseUrl) })
+    const uid     = ensureMonitorUid(req, res);
+    let   monitor;
+
+    try {
+        monitor = await resolveMonitor(uid, { withDefault: !req.query.streamId }); // ?streamId overrides
+    }
+    catch(e) {
+        console.error(e)
+        monitor = { uid, bound: false, streamId: null };
+    }
+
+    res.render('template', { baseUrl: urlSafe(baseUrl), monitor })
 });
 
 // START SERVER
@@ -67,39 +80,130 @@ function urlSafe(dir) {
 }
 
 
-async function autoDectecCurrent(req, res, next) {
+//============================================================
+// Monitor UID cookie: "<UID>.<expiresUnixSeconds>"
+// expiry is kept in the value since browsers never send it back
+//============================================================
+const UID_COOKIE    = 'monitorUid';
+const UID_ALPHABET  = 'ACEFHJKMNPRTUVWXY34679'; // no look-alikes (0/O/Q/D, 1/I/L, 2/Z, 5/S, 8/B, G/6)
+const UID_LENGTH    = 5;
+const UID_COOKIE_RE = new RegExp(`^([${UID_ALPHABET}]{${UID_LENGTH}})\\.(\\d+)$`);
+const _2_DAYS       = 2*24*60*60;  // seconds
+const _5_DAYS       = 5*24*60*60;
+const _35_DAYS      = 35*24*60*60;
 
-    const base    = toBasePath(basePath || req.headers.base_url);
-    const baseUrl = `${base.replace(/\/+$/, '')}/`; // trimEnd(/)
+function getCookie(req, name) {
+
+    for(const part of (req.headers.cookie||'').split(';')) {
+        const [key, ...value] = part.trim().split('=');
+        if(key==name) return decodeURIComponent(value.join('='));
+    }
+}
+
+function getMonitorUid(req) {
+
+    const [, uid, expires] = UID_COOKIE_RE.exec(getCookie(req, UID_COOKIE)||'') || [];
+
+    return uid ? { uid, expires: parseInt(expires) } : null;
+}
+
+function setMonitorUid(req, res, uid, expires) {
+
+    res.cookie(UID_COOKIE, `${uid}.${expires}`, {
+        path     : toBasePath(basePath || req.headers.base_url),
+        expires  : new Date(expires*1000),
+        httpOnly : true,
+        sameSite : 'lax',
+    });
+}
+
+// push expiry by 5 days when less than 2 days left; returns uid or null
+function renewMonitorUid(req, res) {
+
+    const monitor = getMonitorUid(req);
+    const now     = Date.now()/1000|0;
+
+    if(!monitor) return null;
+
+    if(monitor.expires - now < _2_DAYS)
+        setMonitorUid(req, res, monitor.uid, Math.max(monitor.expires, now) + _5_DAYS);
+
+    return monitor.uid;
+}
+
+function ensureMonitorUid(req, res) {
+
+    const uid = renewMonitorUid(req, res);
+
+    if(uid) return uid;
+
+    const newUid = Array.from({ length: UID_LENGTH }, () => UID_ALPHABET[crypto.randomInt(UID_ALPHABET.length)]).join('');
+
+    setMonitorUid(req, res, newUid, (Date.now()/1000|0) + _35_DAYS);
+
+    return newUid;
+}
+
+//============================================================
+// Stream bound to a monitor uid: null when not bound (404), throws on other errors
+//============================================================
+async function getMonitorStreamId(uid) {
 
     try {
+        const { streamId } = await ky.get(`${apiUrl}/api/v2016/cctv-streams/monitors/${encodeURIComponent(uid)}`, { timeout: 5000 }).json();
 
+        return streamId || null;
+    }
+    catch(e) {
+        if(e.response?.status==404) return null;
+        throw e;
+    }
+}
 
-        const searchParams = new URLSearchParams();
+//============================================================
+// Default stream of the active conference
+//============================================================
+async function getDefaultStreamId() {
 
-        searchParams.append('q', JSON.stringify({
-            active :true,
-            $or: [ 
-                { "conference.streamId"           :{ $exists: true } }, 
-                { "conference.defaultCctvStreamId":{ $exists: true } }, 
-            ],
-        }))
+    const searchParams = new URLSearchParams();
 
-        searchParams.append('f', JSON.stringify({ "conference.streamId" : 1, "conference.defaultCctvStreamId" : 1, "EndDate":1 }));
-        searchParams.append('s', JSON.stringify({ "EndDate": -1 }));
-        searchParams.append('fo', 1);
+    searchParams.append('q', JSON.stringify({
+        active :true,
+        $or: [ 
+            { "conference.streamId"           :{ $exists: true } }, 
+            { "conference.defaultCctvStreamId":{ $exists: true } }, 
+        ],
+    }))
 
-        const { conference } = await ky.get(`${apiUrl}/api/v2016/conferences`, { searchParams }).json();
+    searchParams.append('f', JSON.stringify({ "conference.streamId" : 1, "conference.defaultCctvStreamId" : 1, "EndDate":1 }));
+    searchParams.append('s', JSON.stringify({ "EndDate": -1 }));
+    searchParams.append('fo', 1);
 
-        const streamId = conference.defaultCctvStreamId || conference.streamId;
+    const { conference } = await ky.get(`${apiUrl}/api/v2016/conferences`, { searchParams }).json() || {};
 
-        if(streamId) 
-            res.redirect(302, `${baseUrl}?streamId=${streamId}`);        
-        else                 
-            res.redirect(302, path.join(baseUrl, 'help', 'not-configured'));
+    return conference?.defaultCctvStreamId || conference?.streamId || null;
+}
+
+//============================================================
+// Monitor and its stream: bound one first, then conference default
+//============================================================
+async function resolveMonitor(uid, { withDefault }) {
+
+    const boundStreamId = await getMonitorStreamId(uid);
+    const streamId      = boundStreamId || (withDefault ? await getDefaultStreamId() : null);
+
+    return { uid, bound: !!boundStreamId, streamId };
+}
+
+async function getMonitor(req, res) {
+
+    res.set('Cache-Control', 'no-store');
+
+    try {
+        res.json(await resolveMonitor(ensureMonitorUid(req, res), { withDefault: true }));
     }
     catch(e) {
         console.error(e)
-        res.redirect(302, path.join(baseUrl, 'help', 'not-configured'));
+        res.status(502).send();
     }
 }

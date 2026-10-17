@@ -6,9 +6,11 @@ import '~/services/caches';
 import '~/services/cctv-stream';
 
 const ZoomRe = /^\d+(\.\d+)*$/;
+const _15_SECONDS = 1000*15;
+const _2_5_MINUTES = 1000*60*2.5;
 
-    app.controller('TemplateController', ['$rootScope', '$http', '$timeout', '$interval', '$q', '$location', '$injector', 'cctvCache', 'cctvStream',
-                                  function($rootScope,   $http,   $timeout,   $interval,   $q,   $location,   $injector,   cctvCache,   cctvStream) {
+    app.controller('TemplateController', ['$rootScope', '$http', '$timeout', '$interval', '$q', '$location', '$injector', '$window', 'cctvCache', 'cctvStream',
+                                  function($rootScope,   $http,   $timeout,   $interval,   $q,   $location,   $injector,   $window,   cctvCache,   cctvStream) {
 
         const _ctrl = this;
 
@@ -22,14 +24,22 @@ const ZoomRe = /^\d+(\.\d+)*$/;
 
         if(ZoomRe.test(qs.zoom||'')) document.body.style.zoom=qs.zoom;
 
-        if($location.path()=='/authorization') return this;
-        if($location.path()=='/current')       return this;
-
         if($location.path()!='/')
             $location.path('/').replace();
 
-        if(!cctvStream.streamId)
-            $location.path('/current').replace();
+        _ctrl.monitor = {
+            uid      : ($window.cctvMonitor||{}).uid,
+            bound    : ($window.cctvMonitor||{}).bound,
+            override : !!qs.streamId,
+            streamId : cctvStream.streamId
+        };
+
+        $interval(checkMonitor, _2_5_MINUTES);
+
+        if(!cctvStream.streamId) {
+            $location.path('/help/not-configured').replace();
+            return this;
+        }
 
         _ctrl.completed  = completed;
 
@@ -50,8 +60,25 @@ const ZoomRe = /^\d+(\.\d+)*$/;
         }).finally(function(){
 
             updateTime();
-            $interval(updateTime, 1000*15);
+            $interval(updateTime, _15_SECONDS);
         });
+
+        //==============================
+        // binding changed remotely: toggle the pin; reload when the stream changed (unless ?streamId overrides)
+        //==============================
+        function checkMonitor() {
+
+            $http.get('monitor').then(function(res){
+
+                _ctrl.monitor.bound = res.data.bound;
+
+                if(!_ctrl.monitor.override && res.data.streamId && res.data.streamId !== cctvStream.streamId)
+                    $window.location.reload();
+
+            }).catch(function(err){
+                console.error(err.data || err);
+            });
+        }
 
         //==============================
         //
