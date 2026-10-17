@@ -22,6 +22,7 @@
         watchdog();
 
         window.watchdog = watchdog;
+        window.cctvMonitor = <%- JSON.stringify(locals.monitor || {}) %>; // initial { uid, bound, streamId }
 
     </script>
     <meta charset="utf-8">
@@ -77,6 +78,9 @@
             font-size:larger;
             letter-spacing:2px;
         }
+        .footer-uid-override{
+            text-decoration:line-through;
+        }
     </style>
 </head>
 
@@ -111,7 +115,10 @@
         <div  class="footer-text">Powered by </div>
         <img class="footer-img" src="app/resources/images/cbd-leaf-grey.svg" >
         <div  class="footer-text footer-text-green"> SCBD</div>
-        <% if (monitorUid) { %><div class="footer-uid"><%= monitorUid %></div><% } %>
+        <div class="footer-uid" ng-if="templateCtrl.monitor.uid" title="{{templateCtrl.monitor.streamId}}">
+            <i class="fa fa-thumb-tack" ng-show="templateCtrl.monitor.bound"></i>
+            <span ng-class="{ 'footer-uid-override' : templateCtrl.monitor.override }">{{templateCtrl.monitor.uid}}</span>
+        </div>
     </footer>
 </body>
 

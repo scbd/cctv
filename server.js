@@ -34,17 +34,26 @@ appRoutes.use('/app',      express.static(__dirname + '/dist'));
 appRoutes.use('/app',      express.static(__dirname + '/app'));
 appRoutes.use('/app/libs', express.static(__dirname + '/node_modules/@bower_components' ));
 appRoutes.all('/app/*',    (req, res) => res.status(404).send());
-appRoutes.get('/current',        autoDectecCurrent);
-appRoutes.get('/current/stream', currentStream);
+appRoutes.get('/monitor',  getMonitor);
 
-appRoutes.get('/*',        (req, res) => { 
+appRoutes.get('/*',        async (req, res) => { 
 
     res.setHeader('X-Frame-Options', 'ALLOW');
+    res.setHeader('Cache-Control',   'no-store'); // page embeds the monitor's uid and stream
 
-    const baseUrl    = toBasePath(basePath || req.headers.base_url);
-    const monitorUid = renewMonitorUid(req, res);
+    const baseUrl = toBasePath(basePath || req.headers.base_url);
+    const uid     = ensureMonitorUid(req, res);
+    let   monitor;
 
-    res.render('template', { baseUrl: urlSafe(baseUrl), monitorUid })
+    try {
+        monitor = await resolveMonitor(uid, { withDefault: !req.query.streamId }); // ?streamId overrides
+    }
+    catch(e) {
+        console.error(e)
+        monitor = { uid, bound: false, streamId: null };
+    }
+
+    res.render('template', { baseUrl: urlSafe(baseUrl), monitor })
 });
 
 // START SERVER
@@ -136,20 +145,25 @@ function ensureMonitorUid(req, res) {
 }
 
 //============================================================
-// Current stream: monitor association first, then active conference
+// Stream bound to a monitor uid: null when not bound (404), throws on other errors
 //============================================================
-async function resolveCurrentStreamId(req, res) {
-
-    const uid = ensureMonitorUid(req, res);
+async function getMonitorStreamId(uid) {
 
     try {
-        const { streamId } = await ky.get(`${apiUrl}/api/v2016/cctv-streams/monitors/${encodeURIComponent(uid)}`).json();
+        const { streamId } = await ky.get(`${apiUrl}/api/v2016/cctv-streams/monitors/${encodeURIComponent(uid)}`, { timeout: 5000 }).json();
 
-        if(streamId) return streamId;
+        return streamId || null;
     }
     catch(e) {
-        if(e.response?.status!=404) console.error(e);
+        if(e.response?.status==404) return null;
+        throw e;
     }
+}
+
+//============================================================
+// Default stream of the active conference
+//============================================================
+async function getDefaultStreamId() {
 
     const searchParams = new URLSearchParams();
 
@@ -165,40 +179,31 @@ async function resolveCurrentStreamId(req, res) {
     searchParams.append('s', JSON.stringify({ "EndDate": -1 }));
     searchParams.append('fo', 1);
 
-    const { conference } = await ky.get(`${apiUrl}/api/v2016/conferences`, { searchParams }).json();
+    const { conference } = await ky.get(`${apiUrl}/api/v2016/conferences`, { searchParams }).json() || {};
 
-    return conference.defaultCctvStreamId || conference.streamId || null;
+    return conference?.defaultCctvStreamId || conference?.streamId || null;
 }
 
-async function currentStream(req, res) {
+//============================================================
+// Monitor and its stream: bound one first, then conference default
+//============================================================
+async function resolveMonitor(uid, { withDefault }) {
+
+    const boundStreamId = await getMonitorStreamId(uid);
+    const streamId      = boundStreamId || (withDefault ? await getDefaultStreamId() : null);
+
+    return { uid, bound: !!boundStreamId, streamId };
+}
+
+async function getMonitor(req, res) {
 
     res.set('Cache-Control', 'no-store');
 
     try {
-        res.json({ streamId: await resolveCurrentStreamId(req, res) });
+        res.json(await resolveMonitor(ensureMonitorUid(req, res), { withDefault: true }));
     }
     catch(e) {
         console.error(e)
         res.status(502).send();
-    }
-}
-
-async function autoDectecCurrent(req, res, next) {
-
-    const base    = toBasePath(basePath || req.headers.base_url);
-    const baseUrl = `${base.replace(/\/+$/, '')}/`; // trimEnd(/)
-
-    try {
-
-        const streamId = await resolveCurrentStreamId(req, res);
-
-        if(streamId) 
-            res.redirect(302, `${baseUrl}?streamId=${encodeURIComponent(streamId)}&source=current`);        
-        else                 
-            res.redirect(302, path.join(baseUrl, 'help', 'not-configured'));
-    }
-    catch(e) {
-        console.error(e)
-        res.redirect(302, path.join(baseUrl, 'help', 'not-configured'));
     }
 }

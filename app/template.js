@@ -7,7 +7,7 @@ import '~/services/cctv-stream';
 
 const ZoomRe = /^\d+(\.\d+)*$/;
 const _15_SECONDS = 1000*15;
-const _5_MINUTES  = 1000*60*5;
+const _2_5_MINUTES = 1000*60*2.5;
 
     app.controller('TemplateController', ['$rootScope', '$http', '$timeout', '$interval', '$q', '$location', '$injector', '$window', 'cctvCache', 'cctvStream',
                                   function($rootScope,   $http,   $timeout,   $interval,   $q,   $location,   $injector,   $window,   cctvCache,   cctvStream) {
@@ -24,13 +24,22 @@ const _5_MINUTES  = 1000*60*5;
 
         if(ZoomRe.test(qs.zoom||'')) document.body.style.zoom=qs.zoom;
 
-        if($location.path()=='/current')       return this;
-
         if($location.path()!='/')
             $location.path('/').replace();
 
-        if(!cctvStream.streamId)
-            $location.path('/current').replace();
+        _ctrl.monitor = {
+            uid      : ($window.cctvMonitor||{}).uid,
+            bound    : ($window.cctvMonitor||{}).bound,
+            override : !!qs.streamId,
+            streamId : cctvStream.streamId
+        };
+
+        $interval(checkMonitor, _2_5_MINUTES);
+
+        if(!cctvStream.streamId) {
+            $location.path('/help/not-configured').replace();
+            return this;
+        }
 
         _ctrl.completed  = completed;
 
@@ -52,20 +61,19 @@ const _5_MINUTES  = 1000*60*5;
 
             updateTime();
             $interval(updateTime, _15_SECONDS);
-
-            if(qs.source=='current')
-                $interval(checkCurrentStream, _5_MINUTES);
         });
 
         //==============================
-        // stream assigned via /current changed remotely: reload through /current
+        // binding changed remotely: toggle the pin; reload when the stream changed (unless ?streamId overrides)
         //==============================
-        function checkCurrentStream() {
+        function checkMonitor() {
 
-            $http.get('current/stream').then(function(res){
+            $http.get('monitor').then(function(res){
 
-                if(res.data.streamId !== cctvStream.streamId)
-                    $window.location.replace('current');
+                _ctrl.monitor.bound = res.data.bound;
+
+                if(!_ctrl.monitor.override && res.data.streamId && res.data.streamId !== cctvStream.streamId)
+                    $window.location.reload();
 
             }).catch(function(err){
                 console.error(err.data || err);
