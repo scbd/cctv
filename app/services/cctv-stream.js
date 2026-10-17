@@ -1,12 +1,11 @@
 import app from '~/app';
 import _ from 'lodash';
 import moment from 'moment-timezone';
-import 'ngCookies';
 import '~/services/caches';
 
     app.provider('cctvStream', [function() {
 
-        this.$get = ['$location', '$cookies', '$http', '$q', '$timeout', '$window', 'cctvCache', function($location, $cookies, $http, $q, $timeout, $window, cctvCache){
+        this.$get = ['$location', '$http', '$q', '$timeout', '$window', 'cctvCache', function($location, $http, $q, $timeout, $window, cctvCache){
 
             //========================================
             //
@@ -300,7 +299,7 @@ import '~/services/caches';
 
 
             return new CctvStream({
-                streamId  : $location.search().streamId || $cookies.get('streamId'),
+                streamId  : $location.search().streamId || ($window.cctvMonitor||{}).streamId,
                 overrides : {
                     now : $location.search().datetime
                 }
