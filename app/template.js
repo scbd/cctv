@@ -24,7 +24,6 @@ const _5_MINUTES  = 1000*60*5;
 
         if(ZoomRe.test(qs.zoom||'')) document.body.style.zoom=qs.zoom;
 
-        if($location.path()=='/authorization') return this;
         if($location.path()=='/current')       return this;
 
         if($location.path()!='/')
