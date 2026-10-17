@@ -110,7 +110,7 @@ function getMonitorUid(req) {
 function setMonitorUid(req, res, uid, expires) {
 
     res.cookie(UID_COOKIE, `${uid}.${expires}`, {
-        path     : toBasePath(basePath || req.headers.base_url),
+        path     : '/',
         expires  : new Date(expires*1000),
         httpOnly : true,
         sameSite : 'lax',
