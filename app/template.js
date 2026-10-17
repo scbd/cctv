@@ -6,9 +6,11 @@ import '~/services/caches';
 import '~/services/cctv-stream';
 
 const ZoomRe = /^\d+(\.\d+)*$/;
+const _15_SECONDS = 1000*15;
+const _5_MINUTES  = 1000*60*5;
 
-    app.controller('TemplateController', ['$rootScope', '$http', '$timeout', '$interval', '$q', '$location', '$injector', 'cctvCache', 'cctvStream',
-                                  function($rootScope,   $http,   $timeout,   $interval,   $q,   $location,   $injector,   cctvCache,   cctvStream) {
+    app.controller('TemplateController', ['$rootScope', '$http', '$timeout', '$interval', '$q', '$location', '$injector', '$window', 'cctvCache', 'cctvStream',
+                                  function($rootScope,   $http,   $timeout,   $interval,   $q,   $location,   $injector,   $window,   cctvCache,   cctvStream) {
 
         const _ctrl = this;
 
@@ -50,8 +52,26 @@ const ZoomRe = /^\d+(\.\d+)*$/;
         }).finally(function(){
 
             updateTime();
-            $interval(updateTime, 1000*15);
+            $interval(updateTime, _15_SECONDS);
+
+            if(qs.source=='current')
+                $interval(checkCurrentStream, _5_MINUTES);
         });
+
+        //==============================
+        // stream assigned via /current changed remotely: reload through /current
+        //==============================
+        function checkCurrentStream() {
+
+            $http.get('current/stream').then(function(res){
+
+                if(res.data.streamId !== cctvStream.streamId)
+                    $window.location.replace('current');
+
+            }).catch(function(err){
+                console.error(err.data || err);
+            });
+        }
 
         //==============================
         //

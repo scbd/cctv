@@ -70,6 +70,13 @@
             margin: 0 2px 5px 10px; 
             fill:#888888;
         }
+        .footer-uid{
+            position:absolute;
+            right:16px;
+            opacity:.5;
+            font-size:larger;
+            letter-spacing:2px;
+        }
     </style>
 </head>
 
@@ -104,6 +111,7 @@
         <div  class="footer-text">Powered by </div>
         <img class="footer-img" src="app/resources/images/cbd-leaf-grey.svg" >
         <div  class="footer-text footer-text-green"> SCBD</div>
+        <% if (monitorUid) { %><div class="footer-uid"><%= monitorUid %></div><% } %>
     </footer>
 </body>
 
