@@ -202,3 +202,48 @@ ng-view.ng-leave { animation: fadeOut 2s; }
 .label.agenda.CP   { background: #A05800; }
 .label.agenda.NP   { background: #0086B7; }
 .text-center       { text-align:  center;   }
+
+/* RESPONSIVE - keep TV/desktop sizes, scale down on smaller screens */
+
+@media (min-width: 992px) and (max-width: 1199px) {
+    .schedule h1                         { font-size: 46px; }
+}
+
+@media (max-width: 991px) {
+    .schedule h1                         { font-size: 38px; }
+    .header                              { font-size: 150%; }
+    .header .header-datetime .time       { font-size: 28px; }
+    .schedule .schedule-item             { font-size: 150%; }
+    .news                                { font-size: 36px; height: 70px; }
+    ng-view.has-news                     { bottom: 70px; }
+}
+
+@media (max-width: 767px) {
+    .header                              { height: 56px !important; font-size: 110%; }
+    .header .panel-body                  { padding: 8px 10px; }
+    .header img                          { height: 36px !important; }
+    .header .header-datetime .time       { font-size: 22px; line-height: 36px; }
+    .header .header-title                { margin-top: 6px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    ng-view                              { top: 56px; }
+    ng-view.has-news                     { bottom: 44px; }
+    .news                                { font-size: 22px; height: 44px; }
+
+    .schedule h1                         { font-size: 28px; }
+    .schedule .schedule-item             { font-size: 120%; }
+    .schedule .schedule-item  > td > table { padding-left: 0; padding-right: 0; }
+    .schedule .schedule-item-time        { width: 60px !important; padding-left: 0 !important; }
+
+    .announcement                        { font-size: 15px; }
+    .announcement h1                     { font-size: 28px; }
+    .announcement h2                     { font-size: 25px; }
+    .announcement h3                     { font-size: 22px; }
+    .announcement h4                     { font-size: 20px; }
+    .announcement h5                     { font-size: 17px; }
+    .announcement h6                     { font-size: 15px; }
+    .announcement .container             { padding-top: 20px; padding-bottom: 20px; }
+
+    .middle > table > tbody > tr > td > p { font-size: 120% !important; }
+
+    .footer-text, .footer-uid            { font-size: inherit !important; }
+}
