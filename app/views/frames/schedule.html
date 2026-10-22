@@ -25,6 +25,10 @@
                                     <span class="text-{{scheduleCtrl.types[r.type].style}}">{{::scheduleCtrl.types[r.type].title}}</span>
                                     <div  ng-if="::r.sideEvent" class="side-event-id hidden-xs text-muted text-right"><em>#{{::r.sideEvent.id}}</em></div>
 
+                                    <div ng-if="::r.webTvUrl">
+                                        <a class="label web-tv" ng-class="scheduleCtrl.isLive(r) ? 'label-danger' : 'label-default'" title="UN Web TV" target="_blank" ng-href="{{::r.webTvUrl}}"><i class="fa fa-video-camera"></i></a>
+                                    </div>
+
                                     <div ng-if="r.videoUrl">
                                         <a class="label"  style="text-decoration: none" title="video stream" target="_blank" ng-href="{{r.videoUrl}}">
                                             Hybrid
