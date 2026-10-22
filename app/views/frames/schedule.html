@@ -1,4 +1,4 @@
-<div class="schedule" auto-scroll="{ orientation : 'y', speed:50, open:5000, close:5000 }" auto-scroll-on="!!scheduleCtrl.reservations" auto-scroll-complete="scheduleCtrl.completed()">
+<div class="schedule" auto-scroll="{ orientation : 'y', speed:50, open:5000, close:5000, pausable:true }" auto-scroll-on="!!scheduleCtrl.reservations" auto-scroll-complete="scheduleCtrl.completed()">
     <div class="container-fluid">
         <h1 class="text-center">
             <div><small class="text-muted">{{::scheduleCtrl.frame.content.room.location}}</small></div>
@@ -25,6 +25,10 @@
                                     <span class="text-{{scheduleCtrl.types[r.type].style}}">{{::scheduleCtrl.types[r.type].title}}</span>
                                     <div  ng-if="::r.sideEvent" class="side-event-id hidden-xs text-muted text-right"><em>#{{::r.sideEvent.id}}</em></div>
 
+                                    <div ng-if="::r.webTvUrl">
+                                        <a class="label web-tv" ng-class="scheduleCtrl.isLive(r) ? 'label-danger' : 'label-default'" title="UN Web TV" target="_blank" ng-href="{{::r.webTvUrl}}"><i class="fa fa-video-camera"></i></a>
+                                    </div>
+
                                     <div ng-if="r.videoUrl">
                                         <a class="label"  style="text-decoration: none" title="video stream" target="_blank" ng-href="{{r.videoUrl}}">
                                             Hybrid
@@ -38,7 +42,8 @@
                                 </div>
 
                                 <div class="schedule-item-title">
-                                    {{::r.sideEvent.title || r.title}}
+                                    <a ng-if="::r.titleUrl" class="title-link" target="_blank" ng-href="{{::r.titleUrl}}">{{::r.sideEvent.title || r.title}} <em ng-if="::r.sideEvent" class="visible-xs-inline text-muted">#{{::r.sideEvent.id}}</em></a>
+                                    <span ng-if="::!r.titleUrl">{{::r.title}}</span>
                                 </div>
 
                                 <div ng-if="r.agenda.visible && r.agenda.items.length">

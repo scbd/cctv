@@ -7,11 +7,14 @@ import '~/services/cctv-stream'
 
 export { default as template } from './schedule.html'
 
+const WebTvRe = /^https?:\/\/webtv\.un\.org\//i;
+
 export default ['$rootScope', '$http', '$route', '$q', '$timeout', 'cctvCache', 'cctvStream', function($rootScope, $http, $route, $q, $timeout, cctvCache, cctvStream) {
 
         var _ctrl = this;
 
         _ctrl.completed = completed;
+        _ctrl.isLive    = isLive;
 
         init();
 
@@ -51,6 +54,8 @@ export default ['$rootScope', '$http', '$route', '$q', '$timeout', 'cctvCache', 
                 _ctrl.reservations = _(frame.reservations).map(function(r){
 
                     r.videoUrl = r.video && (r.videoUrl || (_ctrl.rooms[(r.location||{}).room]).videoUrl);
+                    r.webTvUrl = (_.find(r.links, function(l) { return WebTvRe.test((l||{}).url||''); })||{}).url;
+                    r.titleUrl = r.webTvUrl || (r.sideEvent && 'https://www.cbd.int/side-events/'+encodeURIComponent(r.sideEvent.id));
 
                     return _.defaults(r, {
                         open : !(_ctrl.types[r.type]||{}).closed
@@ -99,6 +104,14 @@ export default ['$rootScope', '$http', '$route', '$q', '$timeout', 'cctvCache', 
             var timePriority = moment(r.start).format("HH:mm");
 
             return (timePriority + '-' + typePriority + '-' + roomPriority + '-' + (r.title||'')).toLowerCase();
+        }
+
+        //========================================
+        //
+        //========================================
+        function isLive(r) {
+            var now = cctvStream.now();
+            return new Date(r.start) <= now && now <= new Date(r.end);
         }
 
         //========================================
