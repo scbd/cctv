@@ -247,3 +247,9 @@ ng-view.ng-leave { animation: fadeOut 2s; }
 
     .footer-text, .footer-uid            { font-size: inherit !important; }
 }
+
+/* SCHEDULE LINKS */
+
+.schedule .schedule-item .title-link,
+.schedule .schedule-item .title-link:hover,
+.schedule .schedule-item .title-link:focus { color: inherit; text-decoration: none; }

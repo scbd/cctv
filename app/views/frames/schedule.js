@@ -51,6 +51,7 @@ export default ['$rootScope', '$http', '$route', '$q', '$timeout', 'cctvCache', 
                 _ctrl.reservations = _(frame.reservations).map(function(r){
 
                     r.videoUrl = r.video && (r.videoUrl || (_ctrl.rooms[(r.location||{}).room]).videoUrl);
+                    r.titleUrl = (r.sideEvent && 'https://www.cbd.int/side-events/'+encodeURIComponent(r.sideEvent.id));
 
                     return _.defaults(r, {
                         open : !(_ctrl.types[r.type]||{}).closed

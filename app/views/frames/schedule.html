@@ -38,7 +38,8 @@
                                 </div>
 
                                 <div class="schedule-item-title">
-                                    {{::r.sideEvent.title || r.title}}
+                                    <a ng-if="::r.titleUrl" class="title-link" target="_blank" ng-href="{{::r.titleUrl}}">{{::r.sideEvent.title || r.title}} <em ng-if="::r.sideEvent" class="visible-xs-inline text-muted">#{{::r.sideEvent.id}}</em></a>
+                                    <span ng-if="::!r.titleUrl">{{::r.title}}</span>
                                 </div>
 
                                 <div ng-if="r.agenda.visible && r.agenda.items.length">
