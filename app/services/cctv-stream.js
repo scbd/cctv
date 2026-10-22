@@ -146,6 +146,8 @@ import '~/services/caches';
 
                         //  ^^^ combine announcement into a sigle virtual frame ^^^
 
+                        _cctvStream.frameCount = _cctvStream.frameList.length;
+
                         return _cctvStream.frameList;
                     });
                 }

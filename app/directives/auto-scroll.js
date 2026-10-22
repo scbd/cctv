@@ -170,7 +170,7 @@ import app from '~/app';
                         $scope.$apply(function() { resume(true); });
                     });
 
-                    angular.element(document.body).append(playButton);
+                    angular.element(document.body).append(playButton).addClass('auto-scroll-paused');
                 }
 
                 //==================================================
@@ -180,6 +180,8 @@ import app from '~/app';
 
                     if(playButton)
                         playButton.remove();
+
+                    angular.element(document.body).removeClass('auto-scroll-paused');
 
                     playButton = null;
                 }

@@ -256,9 +256,10 @@ ng-view.ng-leave { animation: fadeOut 2s; }
 
 .schedule .schedule-item .label.web-tv { display: inline-block; font-size: 60%; text-decoration: none; }
 
-/* AUTO-SCROLL PLAY BUTTON */
+/* AUTO-SCROLL PLAY & FRAME SKIP BUTTONS */
 
-.auto-scroll-play {
+.auto-scroll-play,
+.frame-skip {
     position: fixed;
     left: 16px;
     z-index: 1001;
@@ -268,6 +269,15 @@ ng-view.ng-leave { animation: fadeOut 2s; }
     font-size: 22px;
     box-shadow: 0 2px 8px rgba(0,0,0,.6);
 }
+
+.frame-skip {
+    bottom: 60px;
+    padding: 0 0 4px;
+    font-size: 32px;
+    line-height: 1;
+}
+
+body.auto-scroll-paused .frame-skip { display: none !important; }
 
 @media (max-width: 767px) {
     .auto-scroll-play { bottom: 60px !important; }

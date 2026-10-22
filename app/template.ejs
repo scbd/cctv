@@ -105,6 +105,8 @@
     <ng-view ng-class="{ 'has-news' : templateCtrl.news }" ng-style="{{templateCtrl.paddings}}">
     </ng-view>
 
+    <button ng-cloak ng-if="templateCtrl.frame && templateCtrl.canSkip()" type="button" class="btn btn-primary frame-skip visible-xs-block" title="Next" ng-click="templateCtrl.completed(templateCtrl.frame)">&raquo;</button>
+
     <div class="news panel panel-default ng-cloak" ng-animate-swap="templateCtrl.news" ng-init="newsLevels={ warning : 'text-warning', alert : 'text-danger' } ">
         <div class="news-content {{newsLevels[templateCtrl.news.content.level]}}" auto-scroll="{ orientation : 'x', autoReset:true, speed:125, open:3000, timeout:8000 }" auto-scroll-on="templateCtrl.news" auto-scroll-complete="templateCtrl.completed(templateCtrl.news)" ng-click="templateCtrl.completed(templateCtrl.news)" >
             {{templateCtrl.news.content.title}}

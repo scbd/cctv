@@ -15,6 +15,7 @@ const _2_5_MINUTES = 1000*60*2.5;
         const _ctrl = this;
 
         _ctrl.getLogoUri = getLogoUri
+        _ctrl.canSkip    = function() { return cctvStream.frameCount > 1; };
 
         var qs = $location.search();
         _ctrl.paddings = {
