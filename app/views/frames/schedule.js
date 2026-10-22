@@ -8,10 +8,14 @@ import '~/services/cctv-stream'
 export { default as template } from './schedule.html'
 
 const WebTvRe = /^https?:\/\/webtv\.un\.org\//i;
+const _10_SECONDS = 1000*10;
 
-export default ['$rootScope', '$http', '$route', '$q', '$timeout', 'cctvCache', 'cctvStream', function($rootScope, $http, $route, $q, $timeout, cctvCache, cctvStream) {
+export default ['$scope', '$rootScope', '$http', '$route', '$q', '$timeout', 'cctvCache', 'cctvStream', function($scope, $rootScope, $http, $route, $q, $timeout, cctvCache, cctvStream) {
 
         var _ctrl = this;
+        var errorTimer;
+
+        $scope.$on('$destroy', function() { $timeout.cancel(errorTimer); });
 
         _ctrl.completed = completed;
         _ctrl.isLive    = isLive;
@@ -69,6 +73,9 @@ export default ['$rootScope', '$http', '$route', '$q', '$timeout', 'cctvCache', 
                 var meetingsReq = $http.get('/api/v2016/meetings', { params: { q: { EVT_CD: { $in: meetingCodes } }, f : { EVT_TIT_EN:1, EVT_CD:1, printSmart:1 , agenda:1, uploadStatement:1 }, cache: true } })
                                         .then(function(res){
                                             return res.data
+                                        }).catch(function(err){
+                                            console.error(err.data || err); // agenda codes are optional: keep the frame
+                                            return [];
                                         });
                                 
                 return meetingsReq.then(function(meetings){
@@ -87,7 +94,7 @@ export default ['$rootScope', '$http', '$route', '$q', '$timeout', 'cctvCache', 
             })
             .catch(function(err) {
                 console.error(err.data || err);
-                completed();
+                errorTimer = $timeout(completed, _10_SECONDS); // don't cycle frames in a tight loop while offline
             });
         }
 
