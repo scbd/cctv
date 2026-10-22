@@ -6,6 +6,8 @@ import '~/services/caches';
 import '~/services/cctv-stream';
 
 const ZoomRe = /^\d+(\.\d+)*$/;
+const ObjectIdRe = /^[0-9a-f]{24}$/i; // room schedule streams use an ObjectId
+const RoomPathRe = /\/room\//i;
 const _15_SECONDS = 1000*15;
 const _2_5_MINUTES = 1000*60*2.5;
 
@@ -25,6 +27,8 @@ const _2_5_MINUTES = 1000*60*2.5;
 
         if(ZoomRe.test(qs.zoom||'')) document.body.style.zoom=qs.zoom;
 
+        const isRoom = ObjectIdRe.test(cctvStream.streamId||'') || RoomPathRe.test($location.path());
+
         if($location.path()!='/')
             $location.path('/').replace();
 
@@ -32,7 +36,8 @@ const _2_5_MINUTES = 1000*60*2.5;
             uid      : ($window.cctvMonitor||{}).uid,
             bound    : ($window.cctvMonitor||{}).bound,
             override : !!qs.streamId,
-            streamId : cctvStream.streamId
+            streamId : cctvStream.streamId,
+            isRoom   : isRoom
         };
 
         $interval(checkMonitor, _2_5_MINUTES);

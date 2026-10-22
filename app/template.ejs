@@ -117,7 +117,7 @@
         <div  class="footer-text">Powered by </div>
         <img class="footer-img" src="app/resources/images/cbd-leaf-grey.svg" >
         <div  class="footer-text footer-text-green"> SCBD</div>
-        <div class="footer-uid" ng-if="templateCtrl.monitor.uid" title="{{templateCtrl.monitor.streamId}}">
+        <div class="footer-uid" ng-if="templateCtrl.monitor.uid && !templateCtrl.monitor.isRoom" title="{{templateCtrl.monitor.streamId}}">
             <i class="fa fa-thumb-tack" ng-show="templateCtrl.monitor.bound"></i>
             <span ng-class="{ 'footer-uid-override' : templateCtrl.monitor.override }">{{templateCtrl.monitor.uid}}</span>
         </div>
