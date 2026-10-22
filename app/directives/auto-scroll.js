@@ -1,3 +1,4 @@
+import angular from 'angular';
 import app from '~/app';
 
     app.directive('autoScroll', ['$timeout', function($timeout) {
@@ -13,6 +14,12 @@ import app from '~/app';
 
                 var container = element.parent();
                 var timers = [];
+                var paused = false;
+                var lastScrollTop = 0;
+                var playButton = null;
+
+                if(($scope.autoScroll||{}).pausable && ($scope.autoScroll||{}).orientation == 'y')
+                    container.on('scroll', onScroll);
 
                 //==================================================
                 //
@@ -20,6 +27,7 @@ import app from '~/app';
                 $scope.$watch('autoScrollOn', function (on) {
 
                     clearTimers();
+                    resume(false);
 
                     if (!on)
                         return;
@@ -105,7 +113,76 @@ import app from '~/app';
                 //==================================================
                 $scope.$on('$destroy', function(){
                     clearTimers();
+                    container.off('scroll', onScroll);
+                    hidePlayButton();
                 });
+
+                //==================================================
+                // user scrolled backward: pause auto-scroll until play is pressed
+                //==================================================
+                function onScroll() {
+
+                    var scrollTop = container.scrollTop();
+
+                    if(!paused && $scope.autoScrollOn && scrollTop < lastScrollTop - 2)
+                        pause();
+
+                    lastScrollTop = scrollTop;
+                }
+
+                //==================================================
+                //
+                //==================================================
+                function pause() {
+                    paused = true;
+                    clearTimers();
+                    showPlayButton();
+                }
+
+                //==================================================
+                //
+                //==================================================
+                function resume(restart) {
+
+                    paused = false;
+                    hidePlayButton();
+
+                    if(restart) {
+                        lastScrollTop = container.scrollTop();
+                        startAutoScroll();
+                    }
+                }
+
+                //==================================================
+                //
+                //==================================================
+                function showPlayButton() {
+
+                    if(playButton)
+                        return;
+
+                    var footer = angular.element('footer');
+                    var bottom = Math.max(window.innerHeight - container[0].getBoundingClientRect().bottom, footer.outerHeight() || 0) + 16;
+
+                    playButton = angular.element('<button type="button" class="btn btn-primary auto-scroll-play" title="Resume"><i class="fa fa-play"></i></button>');
+                    playButton.css('bottom', bottom+'px');
+                    playButton.on('click', function() {
+                        $scope.$apply(function() { resume(true); });
+                    });
+
+                    angular.element(document.body).append(playButton);
+                }
+
+                //==================================================
+                //
+                //==================================================
+                function hidePlayButton() {
+
+                    if(playButton)
+                        playButton.remove();
+
+                    playButton = null;
+                }
 
                 //==================================================
                 //
