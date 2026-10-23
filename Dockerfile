@@ -1,6 +1,6 @@
 # Build stage: needs git, because the @bower_components/* dependencies resolve
 # from GitHub URLs rather than the npm registry.
-FROM node:20.11-alpine AS build
+FROM node:22-alpine AS build
 
 RUN apk add --no-cache git
 
@@ -20,7 +20,7 @@ RUN yarn run build && \
     yarn cache clean
 
 # Runtime stage: no git, no build toolchain, no devDependencies.
-FROM node:20.11-alpine
+FROM node:22-alpine
 
 WORKDIR /usr/src/app
 
