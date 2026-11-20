@@ -1,23 +1,26 @@
-/* jshint node: true, browser: false, esversion: 6*/
-'use strict';
+// Dev helper: serves the app under /<baseUrl>/ by proxying to a running server.js
+// with the base_url header. Usage: node float-server-test.js [baseUrl]
 
 process.on('SIGTERM', ()=>process.exit());
 
 // CREATE HTTP SERVER AND PROXY
+import express   from 'express';
+import morgan    from 'morgan';
+import httpProxy from 'http-proxy';
 
 var baseUrl = process.argv[2] || 'xyz';
 var baseUrlRe = new RegExp('^\\/'+baseUrl+'(\\/|$)');
 
-var app   = require('express')();
-var proxy = require('http-proxy').createProxyServer({
-    target: 'http://localhost:2000',
+var app   = express();
+var proxy = httpProxy.createProxyServer({
+    target: process.env.TARGET_URL || 'http://localhost:2000',
     secure: false,
     headers : {
         base_url : '/'+baseUrl+'/'
     },
 });
 
-app.use(require('morgan')('dev'));
+app.use(morgan('dev'));
 app.all('/'+baseUrl,      reRoot, function(req, res) {  proxy.web(req, res); } );
 app.all('/'+baseUrl+'/*', reRoot, function(req, res) {  proxy.web(req, res); } );
 
