@@ -7,8 +7,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `yarn install` - install deps (postinstall symlinks `node_modules/@bower_components` to `app/libs`)
 - `yarn build` / `yarn dev` - Rollup bundle of `app/boot.js` into `dist/` (dev = watch)
 - `yarn server` - run Express server on `PORT` (default 2000)
+- `npm test` - `node:test` smoke tests in `test/` (run `yarn build` first so `dist/` exists); they start `server.js` against a stub API
 
-No test suite; CI (`.github/workflows/ci.yml`) only builds the Docker image and curls it to check `<base href>`.
+CI (`.github/workflows/ci.yml`) does not run `npm test`; it only builds the Docker image and curls it to check `<base href>`.
 
 ## Architecture
 
