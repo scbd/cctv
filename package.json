@@ -48,10 +48,12 @@
     "build": "rm -rf ./dist && rollup -c",
     "dev": "rm -rf ./dist && rollup -c --watch",
     "server": "node server",
+    "test": "node --test test/*.test.js",
     "eslint": "npx eslint . --fix",
     "clean-reinstall": "rm -rf ./node_modules && rm -rf ./app/libs && yarn install"
   },
   "engines": {
+    "node": "^22.23.4 || ^24.22.1 || >=26.12.1",
     "yarn": ">= 1.0.0"
   }
 }
